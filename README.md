@@ -20,6 +20,19 @@ pwsh ./install.ps1            # repo -> system
 pwsh ./install.ps1 -Collect   # system -> repo (after editing configs live)
 ```
 
+## New PC
+
+```powershell
+pwsh ./packages/install-packages.ps1   # programs (winget) + IosevkaTerm Nerd Font
+pwsh ./install.ps1                     # configs
+git config core.hooksPath hooks        # enable the pre-push secret check
+```
+
+## Safety
+
+`hooks/pre-push` blocks a push that adds private keys, tokens, `.env` files, `.ssh/` content,
+or `CLAUDE.md` / `AGENTS.md`. `config/git/ignore` is a global gitignore that also skips agent files.
+
 ## Not included
 
 - `~/.ssh` (keys and config): secrets, restore from backup.
