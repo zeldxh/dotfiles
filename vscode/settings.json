@@ -25,5 +25,17 @@
     "terminal.integrated.fontFamily": "'IosevkaTerm Nerd Font Mono'",
     "terminal.integrated.fontSize": 22,
     "editor.fontLigatures": false,
-    "terminal.integrated.cursorStyle": "line"
+    "terminal.integrated.cursorStyle": "line",
+    "workbench.startupEditor": "none",
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "chat.commandCenter.enabled": false,
+    "window.commandCenter": false,
+    "workbench.layoutControl.enabled": false,
+    "workbench.tips.enabled": false,
+    "workbench.welcomePage.walkthroughs.openOnInstall": false,
+    "breadcrumbs.enabled": false,
+    "workbench.editor.editorActionsLocation": "hidden",
+    "editor.overviewRulerBorder": false,
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.glyphMargin": false
 }
