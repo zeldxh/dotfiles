@@ -1,0 +1,6 @@
+[tools]
+fzf = "latest"
+java = "temurin-25"
+node = "lts"
+pnpm = "latest"
+python = "latest"
