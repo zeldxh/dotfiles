@@ -48,7 +48,8 @@ if (Get-Module -ListAvailable PSReadLine) {
         InlinePrediction   = & $c '6b6b6b'
         Default            = & $c 'd8d8d8'
     }
-    Set-PSReadLineOption -PredictionSource History -PredictionViewStyle InlineView -ErrorAction SilentlyContinue
+    # Predictions need a real terminal; skip quietly when output is redirected
+    try { Set-PSReadLineOption -PredictionSource History -PredictionViewStyle InlineView } catch {}
     Set-PSReadLineKeyHandler -Key UpArrow   -Function HistorySearchBackward
     Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 }
