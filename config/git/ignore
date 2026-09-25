@@ -7,7 +7,6 @@ desktop.ini
 !.env.example
 *.swp
 *.bak
-.vscode/
 .idea/
 
 # Agent files: never push these
