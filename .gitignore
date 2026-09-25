@@ -1,0 +1,8 @@
+# Secrets and agent files never go in this repo
+.ssh/
+ssh/
+*.pem
+id_*
+CLAUDE.md
+AGENTS.md
+*.bak
