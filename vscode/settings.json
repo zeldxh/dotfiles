@@ -37,5 +37,7 @@
     "workbench.editor.editorActionsLocation": "hidden",
     "editor.overviewRulerBorder": false,
     "editor.hideCursorInOverviewRuler": true,
-    "editor.glyphMargin": false
+    "editor.glyphMargin": false,
+    "chat.titleBar.openInAgentsWindow.enabled": false,
+    "chat.agentsControl.enabled": false
 }
