@@ -1,0 +1,29 @@
+{
+    "workbench.sideBar.location": "right",
+    "workbench.activityBar.location": "top",
+    "workbench.colorTheme": "Alacritty",
+    "workbench.iconTheme": "catppuccin-mocha",
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.fontSize": 22,
+    "editor.linkedEditing": true,
+    "editor.wordWrap": "on",
+    "editor.cursorBlinking": "expand",
+    "security.promptForLocalFileProtocolHandling": false,
+    "editor.minimap.enabled": false,
+    "files.exclude": {
+        "**/View/Assets": true
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "security.workspace.trust.enabled": false,
+    "security.workspace.trust.startupPrompt": "always",
+    "editor.fontFamily": "'IosevkaTerm Nerd Font Mono', Consolas, monospace",
+    "terminal.integrated.fontFamily": "'IosevkaTerm Nerd Font Mono'",
+    "terminal.integrated.fontSize": 22,
+    "editor.fontLigatures": false,
+    "terminal.integrated.cursorStyle": "line"
+}
