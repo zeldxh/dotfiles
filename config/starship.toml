@@ -17,7 +17,7 @@ aliases = { "Zel" = "zel" }
 ssh_only = false
 style = "bold green"
 format = "[@$hostname]($style) "
-aliases = { "DESKTOP-MGC57OF" = "w10", "W10" = "w10" }
+aliases = { "W10" = "w10" }
 
 [directory]
 style = "bold blue"
