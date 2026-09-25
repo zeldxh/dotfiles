@@ -1,0 +1,16 @@
+# Global gitignore (read automatically by git from ~/.config/git/ignore)
+Thumbs.db
+desktop.ini
+.DS_Store
+.env
+.env.*
+!.env.example
+*.swp
+*.bak
+.vscode/
+.idea/
+
+# Agent files: never push these
+CLAUDE.md
+AGENTS.md
+.claude/
