@@ -1,0 +1,24 @@
+#!/bin/sh
+# Blocks a push that contains secrets or agent files. Enable with: git config core.hooksPath hooks
+# Checks only the commits being pushed.
+
+zero=$(git hash-object --stdin </dev/null | tr '[0-9a-f]' '0')
+status=0
+
+while read local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue
+  if [ "$remote_sha" = "$zero" ]; then range="$local_sha"; else range="$remote_sha..$local_sha"; fi
+
+  files=$(git diff-tree --no-commit-id --name-only -r --diff-filter=AM $(git rev-list $range) 2>/dev/null | sort -u)
+  bad=$(echo "$files" | grep -iE '(^|/)(CLAUDE|AGENTS)\.md$|(^|/)id_(rsa|ed25519|ecdsa|dsa)|\.pem$|\.ppk$|(^|/)\.env$|\.ssh/')
+  if [ -n "$bad" ]; then
+    echo "pre-push: blocked, these files must not be pushed:"; echo "$bad"; status=1
+  fi
+
+  hits=$(git log -p $range 2>/dev/null | grep -E '^\+' | grep -nE 'BEGIN [A-Z ]*PRIVATE KEY|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|tskey-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10,}|(password|passwd|secret|api[_-]?key|token)[[:space:]]*[=:][[:space:]]*["'"'"'][^"'"'"']{8,}')
+  if [ -n "$hits" ]; then
+    echo "pre-push: blocked, possible secret in added lines:"; echo "$hits" | head -5; status=1
+  fi
+done
+
+exit $status
