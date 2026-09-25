@@ -1,0 +1,81 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# zel@w10 ~/path  branch !+ ⇡  node 22  took 3s $
+add_newline = false
+command_timeout = 500
+
+format = "$username$hostname$directory$git_branch$git_status$nodejs$python$rust$golang$cmd_duration$status$character"
+
+[username]
+show_always = true
+style_user = "bold green"
+style_root = "bold red"
+format = "[$user]($style)"
+aliases = { "Zel" = "zel" }
+
+[hostname]
+ssh_only = false
+style = "bold green"
+format = "[@$hostname]($style) "
+aliases = { "DESKTOP-MGC57OF" = "w10", "W10" = "w10" }
+
+[directory]
+style = "bold blue"
+truncation_length = 3
+truncation_symbol = "…/"
+truncate_to_repo = true
+read_only = " 󰌾"
+format = "[$path]($style)[$read_only](red)"
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "bold yellow"
+format = "([ $all_status$ahead_behind]($style))"
+conflicted = "="
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+[nodejs]
+symbol = " "
+style = "green"
+format = " [$symbol$version]($style)"
+
+[python]
+symbol = " "
+style = "yellow"
+format = " [$symbol$version]($style)"
+
+[rust]
+symbol = " "
+style = "red"
+format = " [$symbol$version]($style)"
+
+[golang]
+symbol = " "
+style = "cyan"
+format = " [$symbol$version]($style)"
+
+[cmd_duration]
+min_time = 2000
+format = " [ $duration]($style)"
+style = "yellow"
+
+[status]
+disabled = false
+format = " [$status]($style)"
+style = "bold red"
+
+[character]
+success_symbol = " [\\$](bold green)"
+error_symbol = " [\\$](bold red)"
