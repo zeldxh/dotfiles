@@ -1,0 +1,36 @@
+[user]
+	name = Zel
+	email = 783613+zeldxh@users.noreply.github.com
+	signingkey = ~/.ssh/id_ed25519_github.pub
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = code --wait
+	autocrlf = true
+	longpaths = true
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
+[credential "https://github.com"]
+	helper = 
+	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !'C:\\Program Files\\GitHub CLI\\gh.exe' auth git-credential
