@@ -1,36 +1,19 @@
 # Reinstall guide
 
-Everything needed to rebuild this machine after a fresh Windows install. Written 2026-09-29.
-Supersedes the old notes at `G:\Setup\windows10\setup.txt` (those referenced `E:\Credentials`,
-which is now `G:\Credentials` — drive letters had shifted).
+Steps to rebuild this machine after a fresh Windows install. Written 2026-09-29.
 
-**To trigger this with Claude directly**, in a fresh Claude Code session on the new install, say:
-
-> Read `G:\Setup\windows10\setup.md` and migrate my setup — execute it step by step yourself,
-> only asking me for the parts that need my input (UAC prompts, `gh auth login`,
-> `tailscale login`, browser sign-ins). First confirm which drive letter is the `Backup` drive
-> now, in case it moved.
-
-That instruction is also saved in Claude's own memory backup at `G:\Credentials\claude-memory`,
-restored in step 6 below — so once that's copied back, Claude should recognize the request even
-without the long version.
-
-**Change from last time:** projects now live in `~\projects`, not `~\dev`. The `dev` shell
-shortcut is renamed to `proj` and already points at `~\projects` in this repo — nothing to
-edit, just follow the steps below.
+Projects now live in `~\projects`, not `~\dev`. The `proj` shell shortcut already points at
+`~\projects` in this repo, no need to edit anything for that.
 
 ## 0. Before touching the installer
 
-- **Confirm the install only formats the Windows drive.** `D:` (Media), `E:` (Ventoy), `F:`
-  (VTOYEFI) and `G:` (Backup) are separate physical drives and must not be selected in the
-  Windows installer's partition screen. Custom install, format only the OS drive.
-- G: is where everything below is pulled from. If it's not the same G: afterward (letters can
-  shift with drives connected/disconnected), find it first: `Get-Volume` and look for the
-  `Backup` label.
-- Optional, from the old notes, entirely up to you and not something to run unattended: Raphi's
-  Win11Debloat, Chris Titus Tech's WinUtil, and an activation script were listed in
-  `G:\Setup\windows10\debloat.txt`. The activation one bypasses Windows licensing — know what
-  it does before running it.
+Confirm the install only formats the Windows drive. `D:` (Media), `E:` (Ventoy), `F:`
+(VTOYEFI) and `G:` (Backup) are separate physical drives and must not be selected in the
+Windows installer's partition screen. Use a custom install and format only the OS drive.
+
+G: is where everything below is pulled from. If the letter isn't the same afterward (it can
+shift depending on what's connected), find it with `Get-Volume` and look for the `Backup`
+label.
 
 ## 1. Base tools
 
@@ -43,7 +26,9 @@ winget install --id jdx.mise -e
 
 Open a new PowerShell window after this so `git`, `gh`, `pwsh` and `mise` are on PATH.
 
-## 2. Restore SSH keys and Git identity (before cloning anything private)
+## 2. Restore SSH keys and Git identity
+
+Do this before cloning anything private.
 
 ```powershell
 New-Item -ItemType Directory -Force "$HOME\.ssh" | Out-Null
@@ -55,7 +40,8 @@ New-Item -ItemType Directory -Force "$HOME\.config\git" | Out-Null
 Copy-Item "G:\Credentials\gitconfig\.gitconfig" "$HOME\.config\git\config" -Force
 ```
 
-`icacls` matters: OpenSSH refuses a private key that other accounts can read. Test with:
+The `icacls` step matters: OpenSSH refuses a private key that other accounts can read. Test
+with:
 
 ```powershell
 ssh -T git@github.com
@@ -64,8 +50,10 @@ ssh -T git@github.com
 Then sign in for real Git operations:
 
 ```powershell
-gh auth login          # pick SSH, use the existing key
+gh auth login
 ```
+
+Pick SSH and use the existing key.
 
 ## 3. Clone the repos
 
@@ -73,45 +61,31 @@ gh auth login          # pick SSH, use the existing key
 New-Item -ItemType Directory -Force "$HOME\projects" | Out-Null
 Set-Location "$HOME\projects"
 git clone git@github.com:zeldxh/dotfiles.git
-git clone git@github.com:zeldxh/alacritty-ports.git   # private — needs step 2 done first
-git clone git@github.com:zeldxh/jot.git
+git clone git@github.com:zeldxh/alacritty-ports.git
 ```
+
+`alacritty-ports` is private, so step 2 has to be done first. Clone the rest of your repos as
+you need them.
 
 ## 4. Install everything the dotfiles configure
 
 ```powershell
 cd dotfiles
-pwsh ./packages/install-packages.ps1   # winget list + IosevkaTerm Nerd Font
-mise use -g rust@stable                # only needed if you'll build jot
-pwsh ./install.ps1                     # copies config/* to ~/.config, Windows Terminal, VS Code
-git config core.hooksPath hooks        # enables the pre-push secret check, per clone
+pwsh ./packages/install-packages.ps1
+pwsh ./install.ps1
+git config core.hooksPath hooks
 ```
 
-`install-packages.ps1` covers WezTerm, Starship, fastfetch, zoxide, Git, GitHub CLI, PowerShell,
-Windows Terminal, VS Code, 7-Zip, Tailscale, Brave, Discord and the Visual Studio Build Tools
-package entry — but the Build Tools' C++ workload needs the override flag, winget's plain
-install won't include it:
-
-```powershell
-winget install --id Microsoft.VisualStudio.2022.BuildTools -e --override `
-  "--quiet --wait --norestart --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
-```
-
-Only needed if you'll build `jot` from source. Skip it if you just want the prebuilt `jot.exe`
-from its GitHub releases.
-
-VS Code extensions:
-
-```powershell
-Get-Content dotfiles\vscode\extensions.txt | ForEach-Object { code --install-extension $_ }
-```
-
-(`install.ps1` already does this automatically — listed here only for reference.)
+`install-packages.ps1` installs WezTerm, Starship, fastfetch, zoxide, Git, GitHub CLI,
+PowerShell, Windows Terminal, VS Code, 7-Zip, Tailscale, Brave, Discord and the IosevkaTerm
+Nerd Font. `install.ps1` copies the configs into place, sets up Windows Terminal and VS Code,
+and installs the VS Code extensions listed in `vscode/extensions.txt`. The last line enables
+the pre-push hook that checks for secrets before a push.
 
 ## 5. Sign in to the rest
 
-- `tailscale login` — needed to reach `royalclean-vps` over SSH.
-- Open Brave / Discord and sign in if you use their sync.
+Run `tailscale login` to reach the VPS over SSH again, and sign in to Brave and Discord if you
+use their sync.
 
 ## 6. Restore your own files
 
@@ -121,39 +95,26 @@ robocopy "G:\Andrew" "$HOME\Documents\Andrew" /E /COPY:DAT /DCOPY:DAT /MT:8
 robocopy "G:\Games\Emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
 ```
 
-`G:\Dev` is where you keep your own ongoing backup of `~/projects` — restore from whatever is
-there at the time, it isn't something this guide or Claude creates for you. Repos that are
-already on GitHub under your account (`dotfiles`, `alacritty-ports`, `jot`, `lifty`, `busterm`,
-`citari` and the rest) don't need this at all, just `git clone` them again as needed.
+`G:\Dev` is the ongoing backup of `~/projects`, kept up to date by hand. Restore from whatever
+is there at the time. Anything that already lives in its own GitHub repo doesn't need this,
+just clone it again.
 
-Restore Claude's memory of this setup, so it doesn't start from zero:
+Reinstall Steam and Riot into `C:\Games\Steam` and `C:\Games\Riot Games` directly, a file copy
+doesn't restore a game library properly.
 
-```powershell
-Copy-Item "G:\Credentials\claude-memory\*" "$HOME\.claude\projects\C--Users-Zel\memory\" -Force
-```
-
-(The project folder hash `C--Users-Zel` is derived from the working directory path; if you're
-not working from `C:\Users\Zel`, Claude Code will use a different one — ask it where its memory
-directory is and copy there instead.)
-
-Steam, Riot: reinstall the clients into `C:\Games\Steam` and `C:\Games\Riot Games`, libraries
-aren't something a file copy restores cleanly.
+If any of your repos point at a GitHub account other than your own, confirm you still have
+access to it rather than assuming it will be there.
 
 ## 7. Verify
 
-- New WezTerm window: Alacritty colors, `IosevkaTerm Nerd Font Mono`, Starship prompt reads
-  `zel@w10 ~ ❯`.
-- `proj` jumps to `~\projects`.
-- `git commit` on any repo produces a **Verified** commit once the same SSH key is also added
-  as a signing key in your GitHub account settings (this is a GitHub-side setting, not
-  reproduced by any file here).
-- `jot` opens with a translucent window and the tab bar; `cargo build --release` in `~/projects/jot`
-  if you installed the Build Tools.
+Open a new WezTerm window and check for the Alacritty color scheme, the IosevkaTerm font, and
+the Starship prompt reading `zel@w10 ~`. Running `proj` should jump to `~\projects`. A commit
+should show as verified once the same SSH key is also added as a signing key in your GitHub
+account settings, which is a setting on GitHub's side and not something restored by any file
+here.
 
-## What's intentionally not backed up
+## What is intentionally not backed up
 
-- `~/.ssh` itself, `G:\Credentials` and this repo never store the private keys in git — only
-  `G:\Credentials\ssh` has them, restored by copy in step 2.
-- GitHub CLI and Tailscale tokens: re-created by signing in, not stored anywhere.
-- `MNRepo` (was under `ambiente-web`) points at `github.com/ecalvo92/MNRepo`, someone else's
-  account — confirm you still have access rather than expecting to reproduce it here.
+SSH private keys never go into any git repository, only into `G:\Credentials\ssh`, restored by
+copy in step 2. GitHub CLI and Tailscale tokens are not stored anywhere, they come back by
+signing in again.
