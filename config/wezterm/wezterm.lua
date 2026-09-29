@@ -75,7 +75,7 @@ config.keys = {
   { key = '=', mods = 'ALT|SHIFT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
   { key = '+', mods = 'ALT|SHIFT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
   { key = 'w', mods = 'CTRL|SHIFT', action = act.CloseCurrentPane { confirm = false } },
-  { key = 't', mods = 'CTRL|SHIFT', action = act.SpawnTab 'CurrentPaneDomain' },
+  { key = 't', mods = 'CTRL|SHIFT', action = act.SpawnCommandInNewTab { domain = 'CurrentPaneDomain', cwd = wezterm.home_dir } },
   { key = 'LeftArrow', mods = 'ALT', action = act.ActivatePaneDirection 'Left' },
   { key = 'RightArrow', mods = 'ALT', action = act.ActivatePaneDirection 'Right' },
   { key = 'UpArrow', mods = 'ALT', action = act.ActivatePaneDirection 'Up' },
