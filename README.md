@@ -23,7 +23,7 @@ pwsh ./install.ps1 -Collect   # system -> repo (after editing configs live)
 ## New PC
 
 ```powershell
-pwsh ./packages/install-packages.ps1   # programs (winget) + IosevkaTerm Nerd Font
+pwsh ./packages/install-packages.ps1   # programs (winget), IosevkaTerm Nerd Font, VS Code context menu
 pwsh ./install.ps1                     # configs
 git config core.hooksPath hooks        # enable the pre-push secret check
 ```
