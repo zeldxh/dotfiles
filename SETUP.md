@@ -4,6 +4,17 @@ Everything needed to rebuild this machine after a fresh Windows install. Written
 Supersedes the old notes at `G:\Setup\windows10\setup.txt` (those referenced `E:\Credentials`,
 which is now `G:\Credentials` — drive letters had shifted).
 
+**To trigger this with Claude directly**, in a fresh Claude Code session on the new install, say:
+
+> Read `G:\Setup\windows10\setup.md` and migrate my setup — execute it step by step yourself,
+> only asking me for the parts that need my input (UAC prompts, `gh auth login`,
+> `tailscale login`, browser sign-ins). First confirm which drive letter is the `Backup` drive
+> now, in case it moved.
+
+That instruction is also saved in Claude's own memory backup at `G:\Credentials\claude-memory`,
+restored in step 6 below — so once that's copied back, Claude should recognize the request even
+without the long version.
+
 **Change from last time:** projects now live in `~\projects`, not `~\dev`. The `dev` shell
 shortcut is renamed to `proj` and already points at `~\projects` in this repo — nothing to
 edit, just follow the steps below.
@@ -105,16 +116,25 @@ Get-Content dotfiles\vscode\extensions.txt | ForEach-Object { code --install-ext
 ## 6. Restore your own files
 
 ```powershell
-robocopy "G:\Dev-backup" "$HOME\projects" /E /COPY:DAT /DCOPY:DAT /MT:8
+robocopy "G:\Dev" "$HOME\projects" /E /COPY:DAT /DCOPY:DAT /MT:8
 robocopy "G:\Andrew" "$HOME\Documents\Andrew" /E /COPY:DAT /DCOPY:DAT /MT:8
 robocopy "G:\Games\Emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
 ```
 
-`G:\Dev-backup` holds everything from `~/dev` that wasn't already its own pushed git repo as of
-2026-09-29 (`ambiente-web`, `pm-docs`, `resumr`, loose templates). Repos that are already on
-GitHub under your account — `dotfiles`, `alacritty-ports`, `jot`, `lifty`, `busterm`, `citari`,
-and the rest that were in `G:\Setup\...\repos.zip` — don't need this, just `git clone` them
-again as needed; they were confirmed clean and pushed before the backup.
+`G:\Dev` is where you keep your own ongoing backup of `~/projects` — restore from whatever is
+there at the time, it isn't something this guide or Claude creates for you. Repos that are
+already on GitHub under your account (`dotfiles`, `alacritty-ports`, `jot`, `lifty`, `busterm`,
+`citari` and the rest) don't need this at all, just `git clone` them again as needed.
+
+Restore Claude's memory of this setup, so it doesn't start from zero:
+
+```powershell
+Copy-Item "G:\Credentials\claude-memory\*" "$HOME\.claude\projects\C--Users-Zel\memory\" -Force
+```
+
+(The project folder hash `C--Users-Zel` is derived from the working directory path; if you're
+not working from `C:\Users\Zel`, Claude Code will use a different one — ask it where its memory
+directory is and copy there instead.)
 
 Steam, Riot: reinstall the clients into `C:\Games\Steam` and `C:\Games\Riot Games`, libraries
 aren't something a file copy restores cleanly.
