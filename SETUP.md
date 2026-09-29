@@ -11,9 +11,18 @@ Confirm the install only formats the Windows drive. `D:` (Media), `E:` (Ventoy),
 (VTOYEFI) and `G:` (Backup) are separate physical drives and must not be selected in the
 Windows installer's partition screen. Use a custom install and format only the OS drive.
 
-G: is where everything below is pulled from. If the letter isn't the same afterward (it can
-shift depending on what's connected), find it with `Get-Volume` and look for the `Backup`
-label.
+Everything below is pulled from the backup drive, labeled `Backup`. Its letter is not fixed:
+it depends on what else is plugged in, and it changes if the Ventoy USB stick is not connected
+(that stick normally takes `E:` and `F:`). Find the real letter first and keep using it instead
+of typing `G:` from memory:
+
+```powershell
+$backup = (Get-Volume -FileSystemLabel Backup).DriveLetter + ":"
+$backup
+```
+
+Every command below that references the backup drive uses `$backup`, run in the same session so
+the variable stays set. If a step is run later or in a new window, set `$backup` again first.
 
 ## 1. Base tools
 
@@ -32,12 +41,12 @@ Do this before cloning anything private.
 
 ```powershell
 New-Item -ItemType Directory -Force "$HOME\.ssh" | Out-Null
-Copy-Item "G:\Credentials\ssh\*" "$HOME\.ssh\" -Force
+Copy-Item "$backup\Credentials\ssh\*" "$HOME\.ssh\" -Force
 icacls "$HOME\.ssh" /inheritance:r | Out-Null
 icacls "$HOME\.ssh" /grant:r "${env:USERNAME}:(OI)(CI)F" | Out-Null
 
 New-Item -ItemType Directory -Force "$HOME\.config\git" | Out-Null
-Copy-Item "G:\Credentials\gitconfig\.gitconfig" "$HOME\.config\git\config" -Force
+Copy-Item "$backup\Credentials\gitconfig\.gitconfig" "$HOME\.config\git\config" -Force
 ```
 
 The `icacls` step matters: OpenSSH refuses a private key that other accounts can read. Test
@@ -90,12 +99,12 @@ use their sync.
 ## 6. Restore your own files
 
 ```powershell
-robocopy "G:\Dev" "$HOME\projects" /E /COPY:DAT /DCOPY:DAT /MT:8
-robocopy "G:\Andrew" "$HOME\Documents\Andrew" /E /COPY:DAT /DCOPY:DAT /MT:8
-robocopy "G:\Games\Emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
+robocopy "$backup\Dev" "$HOME\projects" /E /COPY:DAT /DCOPY:DAT /MT:8
+robocopy "$backup\Andrew" "$HOME\Documents\Andrew" /E /COPY:DAT /DCOPY:DAT /MT:8
+robocopy "$backup\Games\Emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
 ```
 
-`G:\Dev` is the ongoing backup of `~/projects`, kept up to date by hand. Restore from whatever
+The `Dev` folder on the backup drive is the ongoing backup of `~/projects`, kept up to date by hand. Restore from whatever
 is there at the time. Anything that already lives in its own GitHub repo doesn't need this,
 just clone it again.
 
@@ -115,6 +124,6 @@ here.
 
 ## What is intentionally not backed up
 
-SSH private keys never go into any git repository, only into `G:\Credentials\ssh`, restored by
+SSH private keys never go into any git repository, only into `Credentials\ssh` on the backup drive, restored by
 copy in step 2. GitHub CLI and Tailscale tokens are not stored anywhere, they come back by
 signing in again.
