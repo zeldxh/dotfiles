@@ -25,8 +25,8 @@ function ep {
 }
 
 
-# dev: jump to the projects folder
-function dev { Set-Location "$HOME\dev" }
+# proj: jump to the projects folder
+function proj { Set-Location "$HOME\projects" }
 
 # 7z: alias for 7-Zip
 Set-Alias 7z "C:\Program Files\7-Zip\7z.exe"
