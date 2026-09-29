@@ -21,6 +21,10 @@ $map = [ordered]@{
 }
 if ($wtDir) { $map['windows-terminal\settings.json'] = "$wtDir\LocalState\settings.json" }
 
+if (Get-Command code -ErrorAction SilentlyContinue) {
+    Get-Content (Join-Path $PSScriptRoot 'vscode\extensions.txt') | ForEach-Object { code --install-extension $_ }
+}
+
 foreach ($rel in $map.Keys) {
     $repo = Join-Path $PSScriptRoot $rel
     $live = $map[$rel]
