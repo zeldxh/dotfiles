@@ -32,6 +32,10 @@ foreach ($rel in $map.Keys) {
 
     if (-not (Test-Path $from)) { Write-Warning "missing: $from"; continue }
     New-Item -ItemType Directory -Force (Split-Path $to) | Out-Null
-    Copy-Item $from (Split-Path $to) -Recurse -Force
+    if ((Get-Item $from).PSIsContainer) {
+        Copy-Item $from (Split-Path $to) -Recurse -Force
+    } else {
+        Copy-Item $from $to -Force   # file: exact target name (the profile stub gets renamed)
+    }
     Write-Host "$from -> $to"
 }
