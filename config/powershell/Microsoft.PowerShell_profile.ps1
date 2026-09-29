@@ -1,4 +1,4 @@
-Import-Module -Name Terminal-Icons
+if (Get-Module -ListAvailable Terminal-Icons) { Import-Module Terminal-Icons }
 
 # Real pwsh profile. $PROFILE just dot-sources this file.
 # Prompt
