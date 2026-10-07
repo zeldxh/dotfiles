@@ -97,8 +97,8 @@ if (Test-Path some-repo-name) { "already cloned" } else { git clone git@github.c
 
 ```powershell
 Set-Location "$HOME\projects\dotfiles"
-pwsh ./packages/install-packages.ps1
-pwsh ./install.ps1
+pwsh ./windows/packages/install-packages.ps1
+pwsh ./windows/install.ps1
 git config core.hooksPath hooks
 ```
 
@@ -108,7 +108,7 @@ scripts just overwrite the config files with the same content.
 `install-packages.ps1` installs WezTerm, Starship, fastfetch, zoxide, Git, GitHub CLI,
 PowerShell, Windows Terminal, VS Code, 7-Zip, Tailscale, Brave, Discord and the IosevkaTerm
 Nerd Font. `install.ps1` copies the configs into place, sets up Windows Terminal and VS Code,
-and installs the VS Code extensions listed in `vscode/extensions.txt`. The last line enables
+and installs the VS Code extensions listed in `shared/vscode/extensions.txt`. The last line enables
 the pre-push hook that checks for secrets before a push.
 
 ## 5. Sign in to the rest
