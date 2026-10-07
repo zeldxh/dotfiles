@@ -62,7 +62,7 @@ custom() {  # id, name, command, binding
 }
 custom terminal 'Terminal'     'gtk-launch Alacritty'   "['<Control><Alt>t', '<Super>t']"
 custom rofi     'Rofi launcher' 'rofi -show drun'       "['<Super>s']"
-custom powermenu 'Power menu'   "$bin/power-menu"        "['<Super>Escape']"
+custom powermenu 'Power menu'   "$bin/power-menu"        "['<Super><Shift>l']"
 for n in 1 2 3 4; do custom "pinned$n" "Pinned app $n" "$bin/pinned-app $n" "['<Alt>$n']"; done
 gs org.cinnamon.desktop.keybindings custom-list "['terminal', 'rofi', 'pinned1', 'pinned2', 'pinned3', 'pinned4', 'powermenu']"
 
