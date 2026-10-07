@@ -2,7 +2,7 @@
 
 Steps to rebuild this machine after a fresh Windows install. Written 2026-09-29.
 
-Projects now live in `~\projects`, not `~\dev`. The `proj` shell shortcut already points at
+Projects now live in `~\projects`, not `~\dev`. The `dev` shell shortcut already points at
 `~\projects` in this repo, no need to edit anything for that.
 
 Every block below is plain PowerShell, copy and paste it straight into a terminal. Most steps
@@ -144,7 +144,7 @@ access to it rather than assuming it will be there.
 
 Open a new WezTerm window and check for the Alacritty color scheme, the IosevkaTerm font, and
 the Starship prompt showing `user@hostname` (your actual Windows username and computer name,
-these can be anything, nothing here depends on a specific one). Running `proj` should jump to
+these can be anything, nothing here depends on a specific one). Running `dev` should jump to
 `~\projects`. A commit should show as verified once the same SSH key is also added as a signing
 key in your GitHub account settings, which is a setting on GitHub's side and not something
 restored by any file here.

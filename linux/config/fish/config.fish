@@ -27,7 +27,7 @@ if status is-interactive
     set -g fish_color_valid_path --underline
 
     alias ff fastfetch
-    function proj; cd ~/projects; end
+    function dev; cd ~/projects; end
     function ep; code ~/.config/fish/config.fish; end
     set -q EDITOR; or set -gx EDITOR "code --wait"
 end
