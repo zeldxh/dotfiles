@@ -1,0 +1,23 @@
+#!/bin/bash
+# Session menu in rofi: lock, log out, suspend, reboot, shut down (destructive ones ask to confirm)
+rofi_menu() { rofi -dmenu -i -no-custom -p "" -theme-str "listview { lines: $1; } entry { placeholder: \"$2\"; }"; }
+
+lock=$'  Lock'
+logout=$'  Log out'
+suspend=$'  Suspend'
+reboot=$'  Reboot'
+shutdown=$'  Shut down'
+
+choice=$(printf '%s\n' "$lock" "$logout" "$suspend" "$reboot" "$shutdown" | rofi_menu 5 "Session") || exit 0
+
+confirm() {
+    [ "$(printf '%s\n' 'No' 'Yes' | rofi_menu 2 "$1?")" = "Yes" ]
+}
+
+case "$choice" in
+    "$lock")     cinnamon-screensaver-command --lock ;;
+    "$suspend")  systemctl suspend ;;
+    "$logout")   confirm "Log out" && cinnamon-session-quit --logout --no-prompt ;;
+    "$reboot")   confirm "Reboot" && systemctl reboot ;;
+    "$shutdown") confirm "Shut down" && systemctl poweroff ;;
+esac

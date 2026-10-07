@@ -35,6 +35,8 @@ declare -a MAP=(
     "linux/bin/pinned-app|$HOME/.local/bin/pinned-app"
     "linux/bin/focus-new-windows|$HOME/.local/bin/focus-new-windows"
     "linux/bin/zj-hints|$HOME/.local/bin/zj-hints"
+    "linux/bin/power-menu|$HOME/.local/bin/power-menu"
+    "linux/applications/power-menu.desktop|$HOME/.local/share/applications/power-menu.desktop"
     "linux/autostart/focus-new-windows.desktop|$HOME/.config/autostart/focus-new-windows.desktop"
 )
 

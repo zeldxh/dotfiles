@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Power menu
+Comment=Lock, log out, suspend, reboot or shut down
+Exec=@HOME@/.local/bin/power-menu
+Icon=system-shutdown-symbolic
+Terminal=false
+Categories=System;

@@ -40,6 +40,7 @@ creates the applet settings files after an applet has loaded once.
 | `config/mise/conf.d/linux.toml` | `~/.config/mise/conf.d/` |
 | `config/ssh_config` | `~/.ssh/config`, only if missing (keys are never in the repo) |
 | `bin/` | `~/.local/bin/` |
+| `applications/power-menu.desktop` | `~/.local/share/applications/` (launcher behind the top bar's power button) |
 | `autostart/focus-new-windows.desktop` | `~/.config/autostart/` |
 | `cinnamon/alacritty-rice.css` | appended to a copy of the Mint-Y-Dark-Red Cinnamon theme, installed as `~/.themes/Alacritty-Rice` |
 | `cinnamon/apply.sh` | not copied, it runs `gsettings` / `dbus` |
@@ -58,6 +59,7 @@ creates the applet settings files after an applet has loaded once.
 | `Super + 1..4` | Go to workspace 1..4 |
 | `Super + Shift + 1..4` | Move the focused window to workspace 1..4 |
 | `Alt + 1..4` | Focus or launch the Nth app pinned in the taskbar |
+| `Super + Escape` | Power menu: lock, log out, suspend, reboot, shut down (also the power button at the right end of the top bar) |
 
 ### Terminal (Alacritty, zellij, fish)
 
@@ -99,9 +101,11 @@ to a shell function: it swallows every keypress.
 **Desktop.**
 - `apply.sh` builds the Cinnamon theme (a copy of Mint-Y-Dark-Red plus `alacritty-rice.css`), sets
   fonts, keybindings and workspaces, and lays out the panels: a 36 px top bar (workspaces, clock,
-  tray, bluetooth, network, sound, battery) and the taskbar at the bottom, auto-hidden.
+  tray, bluetooth, network, sound, battery, power button) and the taskbar at the bottom, auto-hidden.
 - `bin/focus-new-windows` runs at login and activates every new normal window. Muffin denies focus to
   apps that do not send a startup timestamp (Alacritty, for one), so new windows opened without a click.
+- `bin/power-menu` is a rofi menu (same theme) for lock, log out, suspend, reboot and shut down; the last three
+  ask for confirmation. The power button in the top bar is a `panel-launchers` applet that opens it.
 - `bin/pinned-app N` reads the taskbar's pinned apps each time, so `Alt + N` follows the pinned order.
   The taskbar applet's own `Super + N` shortcut is switched off because `Super + N` is for workspaces.
 - The terminal shortcut uses `gtk-launch Alacritty` instead of calling `alacritty`, for the same
