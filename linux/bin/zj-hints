@@ -1,0 +1,11 @@
+#!/bin/bash
+# Toggle the key-hint text on the right side of the zellij tab bar (per session)
+Z=@HOME@/.local/share/mise/installs/zellij/latest/zellij
+f="$HOME/.cache/zellij/hints-${ZELLIJ_SESSION_NAME:-none}"
+if [ -e "$f" ]; then
+    rm -f "$f"; text=" "
+else
+    touch "$f"
+    text="Alt+t tab · Ctrl+Tab cambiar · Alt+d dividir · Alt+w cerrar · Alt+flechas mover · Ctrl+Shift+Z zoom · Alt+/ ocultar"
+fi
+"$Z" pipe "zjstatus::pipe::pipe_hints::$text"

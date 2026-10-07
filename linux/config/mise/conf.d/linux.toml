@@ -1,0 +1,4 @@
+[tools]
+fastfetch = "latest"
+starship = "latest"
+zellij = "latest"

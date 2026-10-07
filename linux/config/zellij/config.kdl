@@ -1,0 +1,54 @@
+default_shell "/usr/bin/fish"
+default_layout "clean"
+on_force_close "quit"
+theme "alacritty"
+mouse_mode true
+pane_frames false
+copy_on_select true
+copy_command "xsel --input --clipboard"
+show_startup_tips false
+session_serialization false
+
+themes {
+    alacritty {
+        fg "#d8d8d8"
+        bg "#181818"
+        black "#181818"
+        red "#ac4242"
+        green "#90a959"
+        yellow "#f4bf75"
+        blue "#6a9fb5"
+        magenta "#aa759f"
+        cyan "#75b5aa"
+        white "#d8d8d8"
+        orange "#feca88"
+    }
+}
+
+// Same keys as the WezTerm setup
+keybinds {
+    shared_except "locked" {
+        bind "Alt Shift d" { NewPane; }
+        bind "Alt Shift -" "Alt Shift _" { NewPane "Down"; }
+        bind "Alt Shift =" "Alt Shift +" { NewPane "Right"; }
+        bind "Ctrl Shift w" "Alt w" { CloseFocus; }
+        bind "Ctrl Shift t" "Alt t" { NewTab; }
+        bind "Ctrl Shift z" "Alt z" { ToggleFocusFullscreen; }
+        bind "Alt Left" { MoveFocus "Left"; }
+        bind "Alt Right" { MoveFocus "Right"; }
+        bind "Alt Up" { MoveFocus "Up"; }
+        bind "Alt Down" { MoveFocus "Down"; }
+        bind "Alt Shift Left" { Resize "Increase Left"; }
+        bind "Alt Shift Right" { Resize "Increase Right"; }
+        bind "Alt Shift Up" { Resize "Increase Up"; }
+        bind "Alt Shift Down" { Resize "Increase Down"; }
+        bind "Alt 1" { GoToTab 1; }
+        bind "Alt 2" { GoToTab 2; }
+        bind "Alt 3" { GoToTab 3; }
+        bind "Alt 4" { GoToTab 4; }
+        bind "Alt 5" { GoToTab 5; }
+        bind "Alt /" { Run "@HOME@/.local/bin/zj-hints" { floating true; close_on_exit true; x "0"; y "0"; width "1"; height "1"; }; }
+        bind "Alt h" "Ctrl Shift Left" "Ctrl PageUp" "Alt ," { GoToPreviousTab; }
+        bind "Alt l" "Ctrl Shift Right" "Ctrl PageDown" "Alt ." { GoToNextTab; }
+    }
+}

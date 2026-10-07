@@ -1,0 +1,53 @@
+/* ===== Alacritty palette rice ===== */
+.panel-top, .panel-bottom {
+  background-color: #181818;
+  color: #d8d8d8;
+  font-family: "IosevkaTerm Nerd Font Mono";
+  font-size: 11pt;
+  font-weight: normal; }
+.panel-top { box-shadow: 0 1px #282828; }
+.panel-bottom { box-shadow: 0 -1px #282828; }
+
+.applet-box {
+  color: #d8d8d8;
+  border-radius: 6px;
+  padding: 0 6px;
+  spacing: 4px; }
+.applet-box:hover, .applet-box:checked {
+  color: #f8f8f8;
+  background-color: #282828; }
+.applet-label, .applet-box .applet-label {
+  font-family: "IosevkaTerm Nerd Font Mono";
+  font-size: 11pt;
+  font-weight: normal;
+  color: #d8d8d8; }
+.applet-label:hover, .applet-box:hover .applet-label, .applet-box:checked .applet-label {
+  color: #f8f8f8; }
+.applet-icon { color: #d8d8d8; icon-size: 18px; }
+.system-status-icon { color: #d8d8d8; icon-size: 18px; padding: 0 2px; }
+.panel-status-button { font-weight: normal; color: #d8d8d8; }
+.panel-button { font-weight: normal; color: #d8d8d8; }
+
+.workspace-button {
+  border: none;
+  border-radius: 0;
+  width: 28px;
+  margin: 0 3px;
+  padding: 0;
+  font-family: "IosevkaTerm Nerd Font Mono";
+  font-size: 11pt;
+  font-weight: bold;
+  color: #7f7f7f;
+  background-color: transparent; }
+.workspace-button:shaded {
+  background-color: transparent; }
+.workspace-button:hover {
+  background-color: #282828;
+  color: #d8d8d8; }
+.workspace-button:outlined, .workspace-button:outlined:hover {
+  background-color: #282828;
+  border: none;
+  color: #6a9fb5; }
+
+.window-list-item-box:hover, .grouped-window-list-item-box:hover {
+  background-color: #282828; }

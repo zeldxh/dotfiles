@@ -1,0 +1,15 @@
+#!/bin/bash
+# Gives focus to every new normal window (Muffin denies it to apps that don't send a startup timestamp)
+prev=$(xprop -root _NET_CLIENT_LIST | sed 's/.*# //; s/,//g')
+xprop -root -spy _NET_CLIENT_LIST | while read -r line; do
+    cur=$(echo "$line" | sed 's/.*# //; s/,//g')
+    for id in $cur; do
+        case " $prev " in *" $id "*) continue;; esac
+        sleep 0.15
+        type=$(xprop -id "$id" _NET_WM_WINDOW_TYPE 2>/dev/null)
+        case "$type" in
+            *NORMAL*|*DIALOG*|*"not found"*|"") wmctrl -i -a "$id" 2>/dev/null;;
+        esac
+    done
+    prev=$cur
+done

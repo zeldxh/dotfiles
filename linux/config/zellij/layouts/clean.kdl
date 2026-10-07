@@ -1,0 +1,23 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:@HOME@/.config/zellij/plugins/zjstatus.wasm" {
+                format_left   "{tabs}"
+                format_center ""
+                format_right  "{pipe_hints}"
+                format_space  "#[bg=#181818]"
+                format_hide_on_overlength "false"
+
+                tab_normal            "#[fg=#7f7f7f,bg=#181818] {index} "
+                tab_normal_fullscreen "#[fg=#7f7f7f,bg=#181818] {index} [] "
+                tab_active            "#[fg=#6a9fb5,bg=#282828,bold] {index} "
+                tab_active_fullscreen "#[fg=#6a9fb5,bg=#282828,bold] {index} [] "
+                tab_separator         ""
+
+                pipe_hints_format     "#[fg=#7f7f7f,bg=#181818]{output} "
+                pipe_hints_rendermode "static"
+            }
+        }
+        children
+    }
+}

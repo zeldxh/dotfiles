@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Focus new windows
+Exec=@HOME@/.local/bin/focus-new-windows
+X-GNOME-Autostart-enabled=true
+NoDisplay=true

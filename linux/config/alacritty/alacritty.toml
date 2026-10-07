@@ -1,0 +1,82 @@
+[shell]
+program = "@HOME@/.local/share/mise/installs/zellij/latest/zellij"
+
+[window]
+padding = { x = 8, y = 6 }
+opacity = 1.0
+
+[font]
+size = 18
+normal = { family = "IosevkaTerm Nerd Font Mono" }
+
+[scrolling]
+history = 10000
+
+# Ctrl+Shift+key doesn't reach the multiplexer on its own: forward it as Alt+key (bound in zellij)
+[[keyboard.bindings]]
+key = "T"
+mods = "Control|Shift"
+chars = "\u001bt"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Control|Shift"
+chars = "\u001bw"
+
+[[keyboard.bindings]]
+key = "Z"
+mods = "Control|Shift"
+chars = "\u001bz"
+
+# Windows Terminal style tab switching: Ctrl+Tab / Ctrl+Shift+Tab -> Alt+. / Alt+, (bound in zellij)
+[[keyboard.bindings]]
+key = "Tab"
+mods = "Control"
+chars = "\u001b."
+
+[[keyboard.bindings]]
+key = "Tab"
+mods = "Control|Shift"
+chars = "\u001b,"
+
+# Mouse selections (Shift+drag) go straight to the clipboard, so Ctrl+Shift+C is free for fish's selection
+[selection]
+save_to_clipboard = true
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+chars = "\u001bC"
+
+# Alacritty palette from alacritty-ports/palette.md (cursor and selection as in the WezTerm config)
+[colors.primary]
+background = "#181818"
+foreground = "#d8d8d8"
+
+[colors.cursor]
+text = "#181818"
+cursor = "#d8d8d8"
+
+[colors.selection]
+text = "#181818"
+background = "#d8d8d8"
+
+[colors.normal]
+black = "#181818"
+red = "#ac4242"
+green = "#90a959"
+yellow = "#f4bf75"
+blue = "#6a9fb5"
+magenta = "#aa759f"
+cyan = "#75b5aa"
+white = "#d8d8d8"
+
+[colors.bright]
+black = "#6b6b6b"
+red = "#c55555"
+green = "#aac474"
+yellow = "#feca88"
+blue = "#82b8c8"
+magenta = "#c28cb8"
+cyan = "#93d3c3"
+white = "#f8f8f8"

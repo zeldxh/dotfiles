@@ -1,0 +1,98 @@
+configuration {
+    modi: "drun,run,window";
+    show-icons: true;
+    drun-display-format: "{name}";
+    display-drun: "";
+    display-run: "";
+    display-window: "";
+    font: "IosevkaTerm Nerd Font Mono 16";
+    kb-cancel: "Escape,Super+s";
+}
+
+* {
+    bg:        #181818;
+    raised:    #282828;
+    selection: #383838;
+    fg:        #d8d8d8;
+    muted:     #7f7f7f;
+    accent:    #6a9fb5;
+
+    background-color: transparent;
+    text-color: @fg;
+    spacing: 0;
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 640px;
+    background-color: @bg;
+    border: 2px;
+    border-color: @raised;
+    border-radius: 10px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    padding: 14px;
+    spacing: 10px;
+}
+
+inputbar {
+    background-color: @raised;
+    border-radius: 8px;
+    padding: 10px 14px;
+    spacing: 10px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+textbox, inputbar, listview {
+    text-color: @fg;
+}
+
+entry {
+    text-color: @fg;
+    placeholder: "Buscar...";
+    placeholder-color: @muted;
+}
+
+listview {
+    lines: 8;
+    columns: 1;
+    fixed-height: false;
+    scrollbar: false;
+    spacing: 4px;
+}
+
+element {
+    padding: 8px 12px;
+    border-radius: 8px;
+    spacing: 12px;
+}
+
+element normal.normal, element alternate.normal,
+element normal.urgent, element alternate.urgent,
+element normal.active, element alternate.active {
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element selected.normal, element selected.urgent, element selected.active {
+    background-color: @selection;
+    text-color: #f8f8f8;
+}
+
+element-icon {
+    size: 1.4em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
+    highlight: bold #6a9fb5;
+}
