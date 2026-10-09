@@ -1,6 +1,6 @@
 # Reinstall guide
 
-Steps to rebuild this machine by hand after a fresh Windows 10 install. Updated 2026-10-09.
+Steps to rebuild this machine by hand after a fresh Windows 10 or 11 install. Updated 2026-10-09.
 
 Projects live in `C:\dev`. The `dev` shell shortcut already points there. Personal files live in
 `~\files`, not `Documents`, which programs fill with their own folders.
@@ -26,10 +26,14 @@ and waits for them to time out: every new site takes 7 to 15 s to start loading.
 - If you debloat with WinUtil, set its DNS option to **Default**, never a provider: picking one
   (Cloudflare, Google...) also sets its IPv6 servers. Its "IPv6: Set IPv4 as Preferred" tweak
   is fine to keep, it does not touch DNS.
-- Set Cloudflare by hand, **IPv4 only**, in the Settings app: Settings > Network & internet >
-  Ethernet > DNS server assignment > Edit > Manual. Turn on **IPv4**: preferred `1.1.1.1`,
-  alternate `1.0.0.1`, DNS over HTTPS **On (automatic template)** for both. Leave **IPv6 off**.
-  Save.
+- Set Cloudflare by hand, **IPv4 only**:
+  - **Windows 11**, in the Settings app: Settings > Network & internet > Ethernet > DNS server
+    assignment > Edit > Manual. Turn on **IPv4**: preferred `1.1.1.1`, alternate `1.0.0.1`, DNS
+    over HTTPS **On (automatic template)** for both. Leave **IPv6 off**. Save.
+  - **Windows 10**, whose Settings app cannot change only the DNS and has no DNS over HTTPS:
+    Win + R, `ncpa.cpl`, right click Ethernet > Properties. "Internet Protocol Version 4
+    (TCP/IPv4)" > "Use the following DNS server addresses": `1.1.1.1` and `1.0.0.1`. "Internet
+    Protocol Version 6 (TCP/IPv6)" > "Obtain DNS server address automatically". OK on both.
 
 Step 8 checks that it worked.
 

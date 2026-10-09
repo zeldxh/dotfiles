@@ -5,7 +5,7 @@ Alacritty's default palette) and `IosevkaTerm Nerd Font Mono`.
 
 | | Folder | Guide |
 |---|---|---|
-| Windows 10 | [`windows/`](windows) | Windows Terminal, PowerShell 7, Starship, fastfetch, Git, VS Code. See [`windows/SETUP.md`](windows/SETUP.md) |
+| Windows 10 / 11 | [`windows/`](windows) | Windows Terminal, PowerShell 7, Starship, fastfetch, Git, VS Code. See [`windows/SETUP.md`](windows/SETUP.md) |
 | Linux Mint (Cinnamon) | [`linux/`](linux) | Alacritty, zellij, fish, Starship, rofi, riced Cinnamon. See [`linux/README.md`](linux/README.md) |
 | Both | [`shared/`](shared) | Starship prompt, global gitignore, mise tools, VS Code settings and extensions |
 
