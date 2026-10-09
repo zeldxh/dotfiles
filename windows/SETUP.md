@@ -14,8 +14,8 @@ Use a custom install and format only the OS drive. The other physical drives, in
 backup drive (labeled `Backup`) and the Ventoy USB stick, must not be selected in the Windows
 installer's partition screen.
 
-Then install drivers and run Windows Update, rebooting until nothing is pending. A pending
-reboot makes some installers in step 4 fail (Visual Studio Build Tools exits with 5008).
+Then install drivers and run Windows Update, rebooting until nothing is pending, so no installer
+in step 4 runs into a pending reboot.
 
 ### DNS: IPv4 only
 
@@ -98,12 +98,12 @@ pwsh ./windows/packages/install-packages.ps1
 ```
 
 `install-packages.ps1` installs, with `winget`: Git, GitHub CLI, PowerShell, Windows Terminal,
-Starship, fastfetch, zoxide, mise, VS Code, 7-Zip, Tailscale, Brave, Discord and Visual Studio
-Build Tools. Then the IosevkaTerm Nerd Font, the "Open with Code" Explorer menu and the
-Terminal-Icons module. Some installers ask for admin rights (UAC), accept them.
+Starship, fastfetch, zoxide, mise, VS Code, 7-Zip, Tailscale, Brave and Discord. Then the
+IosevkaTerm Nerd Font, the "Open with Code" Explorer menu and the Terminal-Icons module. Some
+installers ask for admin rights (UAC), accept them.
 
-**Close the window and open a new one** so `code` and the rest are on PATH. Without this,
-`install.ps1` skips the VS Code extensions and the Ash theme.
+**Close the window and open a new one** so `code`, `mise` and the rest are on PATH. Without this,
+`install.ps1` skips the VS Code extensions, the Ash theme and the mise tools.
 
 ```powershell
 Set-Location "C:\dev\dotfiles"
@@ -113,9 +113,11 @@ git config core.hooksPath hooks
 
 `install.ps1` copies the configs into place (PowerShell profile, Starship, fastfetch, git, mise,
 Windows Terminal, VS Code settings), installs the VS Code extensions in
-`shared/vscode/extensions.txt`, clones [`ash-theme`](https://github.com/zeldxh/ash-theme) next to
-`dotfiles` and installs it into VS Code, and patches Discord with Vencord. The last line enables
-the pre-push hook that checks for secrets before a push.
+`shared/vscode/extensions.txt`, adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the
+user PATH and runs `mise install` (node, java, python, pnpm, fzf), clones
+[`ash-theme`](https://github.com/zeldxh/ash-theme) next to `dotfiles` and installs it into VS
+Code, and patches Discord with Vencord. The last line enables the pre-push hook that checks for
+secrets before a push.
 
 Both scripts are safe to run again. Run `install.ps1` again after a Discord update, which undoes
 the Vencord patch.
@@ -125,12 +127,10 @@ the Vencord patch.
 ```powershell
 if ((gh auth status 2>&1) -match "Logged in") { "Already signed in to GitHub CLI" } else { gh auth login }
 tailscale login
-mise install
 ```
 
 In `gh auth login` pick GitHub.com, SSH, **Skip** the key upload (`id_ed25519_github` is already
-on the account), and log in with the browser. `mise install` installs node, java, python, pnpm
-and fzf. Sign in to Brave and Discord too if you use their sync, there is nothing to script for
+on the account), and log in with the browser. Sign in to Brave and Discord too if you use their sync, there is nothing to script for
 either.
 
 ## 6. Restore your own files
@@ -174,6 +174,10 @@ Get-DnsClientServerAddress -InterfaceAlias Ethernet -AddressFamily IPv6 | Select
 
 The first line must print nothing. If it prints addresses and the lookup takes seconds, remove
 them from an admin terminal: `netsh interface ipv6 delete dnsservers "Ethernet" all`.
+
+Then mise, in a new window: `mise doctor` must end with `No problems found` (and show
+`shims_on_path: yes`). If a tool is missing, `mise install`; if the shims are not on PATH, run
+`install.ps1` again.
 
 Open a new Windows Terminal window and check for the Ash color scheme, the IosevkaTerm font, and
 the Starship prompt showing `user@hostname`. Running `dev` should jump to `C:\dev`. VS Code

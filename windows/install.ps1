@@ -43,6 +43,26 @@ foreach ($rel in $map.Keys) {
     Write-Host "$from -> $to"
 }
 
+# mise: put its shims folder on the user PATH, so every program (not only this shell) finds the
+# node, python, java... it installs, then install the tools in shared/mise. The folder comes from
+# LOCALAPPDATA (or MISE_DATA_DIR), so it works for any username.
+if (-not $Collect) {
+    if (Get-Command mise -ErrorAction SilentlyContinue) {
+        $data  = if ($env:MISE_DATA_DIR) { $env:MISE_DATA_DIR } else { Join-Path $env:LOCALAPPDATA 'mise' }
+        $shims = Join-Path $data 'shims'
+        $userPath = @([Environment]::GetEnvironmentVariable('Path', 'User') -split ';' | Where-Object { $_ })
+        if ($userPath -notcontains $shims) {
+            # first, so mise's python wins over the Microsoft Store python stub in WindowsApps
+            [Environment]::SetEnvironmentVariable('Path', (@($shims) + $userPath) -join ';', 'User')
+            Write-Host "Added to the user PATH: $shims"
+        }
+        if (($env:Path -split ';') -notcontains $shims) { $env:Path = "$shims;$env:Path" }
+        mise install
+    } else {
+        Write-Warning 'mise not found: open a new terminal after install-packages.ps1 and run this again.'
+    }
+}
+
 # Ash theme for VS Code: its own public repo, cloned next to this one and kept up to date
 if (-not $Collect) {
     $ash = Join-Path (Split-Path $root -Parent) 'ash-theme'
