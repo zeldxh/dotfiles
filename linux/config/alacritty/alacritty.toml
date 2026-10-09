@@ -48,7 +48,7 @@ key = "C"
 mods = "Control|Shift"
 chars = "\u001bC"
 
-# Alacritty palette from alacritty-ports/palette.md (cursor and selection as in the WezTerm config)
+# Alacritty palette from alacritty-ports/palette.md
 [colors.primary]
 background = "#181818"
 foreground = "#d8d8d8"

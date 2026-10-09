@@ -5,7 +5,7 @@ My setup on two systems, with the same look on both: Alacritty's default palette
 
 | | Folder | Guide |
 |---|---|---|
-| Windows 10 | [`windows/`](windows) | WezTerm, Windows Terminal, PowerShell 7, Starship, fastfetch, Git, VS Code. See [`windows/SETUP.md`](windows/SETUP.md) |
+| Windows 10 | [`windows/`](windows) | Windows Terminal, PowerShell 7, Starship, fastfetch, Git, VS Code. See [`windows/SETUP.md`](windows/SETUP.md) |
 | Linux Mint (Cinnamon) | [`linux/`](linux) | Alacritty, zellij, fish, Starship, rofi, riced Cinnamon. See [`linux/README.md`](linux/README.md) |
 | Both | [`shared/`](shared) | Starship prompt, global gitignore, mise tools, VS Code settings and extensions |
 
@@ -15,7 +15,7 @@ My setup on two systems, with the same look on both: Alacritty's default palette
 
 ```
 shared/     used by both systems (starship.toml, git/ignore, mise/, vscode/)
-windows/    install.ps1, packages/ (winget), config/ (wezterm, powershell, git, fastfetch),
+windows/    install.ps1, packages/ (winget), config/ (powershell, git, fastfetch),
             powershell/, windows-terminal/, SETUP.md
 linux/      install.sh, config/, bin/, cinnamon/, autostart/, README.md
 hooks/      pre-push

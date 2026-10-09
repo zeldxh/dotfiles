@@ -25,7 +25,7 @@ themes {
     }
 }
 
-// Same keys as the WezTerm setup
+// Same split keys as Windows Terminal (Alt+Shift+D)
 keybinds {
     shared_except "locked" {
         bind "Alt Shift d" { NewPane; }

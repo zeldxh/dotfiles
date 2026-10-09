@@ -2,8 +2,9 @@
 
 Steps to rebuild this machine after a fresh Windows install. Written 2026-09-29.
 
-Projects now live in `~\projects`, not `~\dev`. The `dev` shell shortcut already points at
-`~\projects` in this repo, no need to edit anything for that.
+Projects live in `C:\dev`. The `dev` shell shortcut already points there, no need to edit
+anything for that. Personal files live in `~\files`, not `Documents`, which programs fill with
+their own folders.
 
 Every block below is plain PowerShell, copy and paste it straight into a terminal. Most steps
 check first and skip anything already in place, so it is fine to run this even if some of it
@@ -80,8 +81,8 @@ Pick SSH and use the existing key.
 ## 3. Clone the repos
 
 ```powershell
-New-Item -ItemType Directory -Force "$HOME\projects" | Out-Null
-Set-Location "$HOME\projects"
+New-Item -ItemType Directory -Force "C:\dev" | Out-Null
+Set-Location "C:\dev"
 if (Test-Path dotfiles) { "dotfiles already cloned" } else { git clone git@github.com:zeldxh/dotfiles.git }
 if (Test-Path alacritty-ports) { "alacritty-ports already cloned" } else { git clone git@github.com:zeldxh/alacritty-ports.git }
 ```
@@ -96,7 +97,7 @@ if (Test-Path some-repo-name) { "already cloned" } else { git clone git@github.c
 ## 4. Install everything the dotfiles configure
 
 ```powershell
-Set-Location "$HOME\projects\dotfiles"
+Set-Location "C:\dev\dotfiles"
 pwsh ./windows/packages/install-packages.ps1
 pwsh ./windows/install.ps1
 git config core.hooksPath hooks
@@ -105,7 +106,7 @@ git config core.hooksPath hooks
 Every line here is safe to run again later, `winget` skips what is already installed and the
 scripts just overwrite the config files with the same content.
 
-`install-packages.ps1` installs WezTerm, Starship, fastfetch, zoxide, Git, GitHub CLI,
+`install-packages.ps1` installs Starship, fastfetch, zoxide, Git, GitHub CLI,
 PowerShell, Windows Terminal, VS Code, 7-Zip, Tailscale, Brave, Discord and the IosevkaTerm
 Nerd Font. `install.ps1` copies the configs into place, sets up Windows Terminal and VS Code,
 and installs the VS Code extensions listed in `shared/vscode/extensions.txt`. The last line enables
@@ -125,12 +126,12 @@ Brave and Discord too if you use their sync, there is nothing to script for eith
 Robocopy only copies what is missing or changed, so these are safe to run more than once.
 
 ```powershell
-robocopy "$backup\Dev" "$HOME\projects" /E /COPY:DAT /DCOPY:DAT /MT:8
-robocopy "$backup\Andrew" "$HOME\Documents\Andrew" /E /COPY:DAT /DCOPY:DAT /MT:8
+robocopy "$backup\Dev" "C:\dev" /E /COPY:DAT /DCOPY:DAT /MT:8
+robocopy "$backup\Andrew" "$HOME\files" /E /COPY:DAT /DCOPY:DAT /MT:8
 robocopy "$backup\Games\Emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
 ```
 
-The `Dev` folder on the backup drive is the ongoing backup of `~/projects`, kept up to date by
+The `Dev` folder on the backup drive is the ongoing backup of `C:\dev`, kept up to date by
 hand. Restore from whatever is there at the time. Anything that already lives in its own GitHub
 repo doesn't need this, just clone it again.
 
@@ -142,10 +143,10 @@ access to it rather than assuming it will be there.
 
 ## 7. Verify
 
-Open a new WezTerm window and check for the Alacritty color scheme, the IosevkaTerm font, and
+Open a new Windows Terminal window and check for the Alacritty color scheme, the IosevkaTerm font, and
 the Starship prompt showing `user@hostname` (your actual Windows username and computer name,
 these can be anything, nothing here depends on a specific one). Running `dev` should jump to
-`~\projects`. A commit should show as verified once the same SSH key is also added as a signing
+`C:\dev`. A commit should show as verified once the same SSH key is also added as a signing
 key in your GitHub account settings, which is a setting on GitHub's side and not something
 restored by any file here.
 

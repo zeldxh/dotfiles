@@ -22,9 +22,6 @@
           "PackageIdentifier": "Microsoft.WindowsTerminal"
         },
         {
-          "PackageIdentifier": "wez.wezterm"
-        },
-        {
           "PackageIdentifier": "Starship.Starship"
         },
         {

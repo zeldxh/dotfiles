@@ -13,7 +13,6 @@ $wtDir = Get-ChildItem "$env:LOCALAPPDATA\Packages" -Directory -Filter "Microsof
 
 # repo path (relative to the repo root) -> live path
 $map = [ordered]@{
-    'windows\config\wezterm'                     = "$HOME\.config\wezterm"
     'windows\config\fastfetch'                   = "$HOME\.config\fastfetch"
     'windows\config\git\config'                 = "$HOME\.config\git\config"
     'shared\git\ignore'                          = "$HOME\.config\git\ignore"

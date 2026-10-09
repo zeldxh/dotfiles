@@ -136,7 +136,7 @@ entry and has to be added by hand. Private keys and `allowed_signers` are never 
 
 | | Windows | Linux |
 |---|---|---|
-| Terminal | WezTerm | Alacritty + zellij (Alacritty has no tabs) |
+| Terminal | Windows Terminal | Alacritty + zellij (Alacritty has no tabs) |
 | Shell | PowerShell 7 | fish |
 | Prompt | Starship | Starship (shared config) |
 | Launcher | Start menu | rofi (`Super + S`) |
