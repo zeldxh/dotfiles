@@ -52,6 +52,9 @@ gs org.cinnamon.desktop.keybindings.wm close "['<Alt>F4', '<Super>q']"
 gs org.cinnamon.desktop.keybindings show-desklets "[]"                  # frees Super+S for rofi
 gs org.cinnamon.desktop.keybindings.media-keys terminal "[]"            # replaced by the custom one below
 
+# --- Tiling: drag a window to a screen edge/corner to snap it to half/quarter (Super+arrows too) ---
+gs org.cinnamon.muffin edge-tiling true
+
 # --- Custom keybindings -------------------------------------------------------------------------
 # Terminal: gtk-launch (not plain `alacritty`) so Muffin hands the new window focus
 # Rofi:     Super+S launcher

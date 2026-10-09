@@ -60,6 +60,7 @@ creates the applet settings files after an applet has loaded once.
 | `Super + Q` | Close window (`Alt + F4` still works) |
 | `Super + 1..4` | Go to workspace 1..4 |
 | `Super + Shift + 1..4` | Move the focused window to workspace 1..4 |
+| `Super + arrows` or drag a window to a screen edge/corner | Snap it to a half or quarter of the screen (edge tiling is on) |
 | `Alt + 1..4` | Focus or launch the Nth app pinned in the taskbar |
 | `Super + Shift + L` | Power menu: lock, log out, suspend, reboot, shut down (also the power button at the right end of the top bar) |
 
