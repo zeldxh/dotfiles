@@ -1,159 +1,157 @@
 # Reinstall guide
 
-Steps to rebuild this machine after a fresh Windows install. Written 2026-09-29.
+Steps to rebuild this machine by hand after a fresh Windows 10 install. Updated 2026-10-09.
 
-Projects live in `C:\dev`. The `dev` shell shortcut already points there, no need to edit
-anything for that. Personal files live in `~\files`, not `Documents`, which programs fill with
-their own folders.
+Projects live in `C:\dev`. The `dev` shell shortcut already points there. Personal files live in
+`~\files`, not `Documents`, which programs fill with their own folders.
 
 Every block below is plain PowerShell, copy and paste it straight into a terminal. Most steps
-check first and skip anything already in place, so it is fine to run this even if some of it
-was already done by hand, for example installing Git or PowerShell just to get this far in the
-first place.
+check first and skip anything already in place, so it is fine to run a step again.
 
 ## 0. Before touching the installer
 
-Confirm the install only formats the Windows drive. `D:` (Media), `E:` (Ventoy), `F:`
-(VTOYEFI) and `G:` (Backup) are separate physical drives and must not be selected in the
-Windows installer's partition screen. Use a custom install and format only the OS drive.
+Use a custom install and format only the OS drive. The other physical drives, including the
+backup drive (labeled `Backup`) and the Ventoy USB stick, must not be selected in the Windows
+installer's partition screen.
 
-Everything below is pulled from the backup drive, labeled `Backup`. Its letter is not fixed:
-it depends on what else is plugged in, and it changes if the Ventoy USB stick is not connected
-(that stick normally takes `E:` and `F:`). Find the real letter first and keep using it instead
-of typing `G:` from memory:
+Then install drivers and run Windows Update, rebooting until nothing is pending. A pending
+reboot makes some installers in step 4 fail (Visual Studio Build Tools exits with 5008).
+
+## 1. Base tools
+
+`winget` comes with the App Installer package. On a fresh Windows 10 it can be missing or too
+old: if `winget --version` fails, update **App Installer** from the Microsoft Store first.
+
+```powershell
+winget --version
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) { winget install --id Git.Git -e } else { "Git already installed" }
+if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) { winget install --id Microsoft.PowerShell -e } else { "PowerShell 7 already installed" }
+```
+
+Close that window and open **PowerShell 7** (`pwsh`). Every step below runs in it.
+
+## 2. Find the backup drive
+
+Its letter is not fixed (it changes with what else is plugged in), so look it up by label:
 
 ```powershell
 $backup = (Get-Volume -FileSystemLabel Backup).DriveLetter + ":"
 $backup
 ```
 
-Every command below that references the backup drive uses `$backup`, run in the same session so
-the variable stays set. If a step is run later or in a new window, set `$backup` again first.
+Steps 3 and 6 use `$backup`. In a new window, run this block again first.
 
-## 1. Base tools
-
-```powershell
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) { winget install --id Git.Git -e } else { "Git already installed" }
-if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { winget install --id GitHub.cli -e } else { "GitHub CLI already installed" }
-if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) { winget install --id Microsoft.PowerShell -e } else { "PowerShell 7 already installed" }
-if (-not (Get-Command mise -ErrorAction SilentlyContinue)) { winget install --id jdx.mise -e } else { "mise already installed" }
-```
-
-Open a new PowerShell window after this so `git`, `gh`, `pwsh` and `mise` are on PATH.
-
-## 2. Restore SSH keys and Git identity
-
-Do this before cloning anything private.
+## 3. Restore SSH keys and Git identity
 
 ```powershell
 if (Test-Path "$HOME\.ssh\id_ed25519_github") {
     "SSH keys already present, skipping"
 } else {
     New-Item -ItemType Directory -Force "$HOME\.ssh" | Out-Null
-    Copy-Item "$backup\Credentials\ssh\*" "$HOME\.ssh\" -Force
-    icacls "$HOME\.ssh" /inheritance:r | Out-Null
-    icacls "$HOME\.ssh" /grant:r "${env:USERNAME}:(OI)(CI)F" | Out-Null
+    Copy-Item "$backup\credentials\.ssh\*" "$HOME\.ssh\" -Force
+    icacls "$HOME\.ssh" /inheritance:r /grant:r "${env:USERNAME}:(OI)(CI)F" /grant:r "SYSTEM:(OI)(CI)F" | Out-Null
+    Get-ChildItem "$HOME\.ssh" -File | ForEach-Object {
+        icacls $_.FullName /inheritance:r /grant:r "${env:USERNAME}:F" /grant:r "SYSTEM:F" | Out-Null
+    }
 }
 
 if (Test-Path "$HOME\.config\git\config") {
     "Git config already present, skipping"
 } else {
     New-Item -ItemType Directory -Force "$HOME\.config\git" | Out-Null
-    Copy-Item "$backup\Credentials\gitconfig\.gitconfig" "$HOME\.config\git\config" -Force
+    Copy-Item "$backup\credentials\.config\git\*" "$HOME\.config\git\" -Force
 }
-```
 
-The `icacls` step matters: OpenSSH refuses a private key that other accounts can read. Test
-with:
-
-```powershell
 ssh -T git@github.com
 ```
 
-Then sign in for real Git operations:
+The last line should answer `Hi zeldxh!` (its exit code is 1 even then, GitHub gives no shell).
+The `icacls` lines matter: OpenSSH refuses a private key that other accounts can read.
 
-```powershell
-if ((gh auth status 2>&1) -match "Logged in") { "Already signed in to GitHub CLI" } else { gh auth login }
-```
-
-Pick SSH and use the existing key.
-
-## 3. Clone the repos
+## 4. Clone the dotfiles and install everything
 
 ```powershell
 New-Item -ItemType Directory -Force "C:\dev" | Out-Null
-Set-Location "C:\dev"
-if (Test-Path dotfiles) { "dotfiles already cloned" } else { git clone git@github.com:zeldxh/dotfiles.git }
+if (Test-Path "C:\dev\dotfiles") { "dotfiles already cloned" } else { git clone git@github.com:zeldxh/dotfiles.git "C:\dev\dotfiles" }
+Set-Location "C:\dev\dotfiles"
+pwsh ./windows/packages/install-packages.ps1
 ```
 
-The Ash theme (`ash-theme`) does not need cloning by hand: `install.ps1` in step 4 clones it next
-to `dotfiles` and installs it into VS Code. Clone the rest of your repos as you need them, the
-same check-first pattern works for any of them:
+`install-packages.ps1` installs, with `winget`: Git, GitHub CLI, PowerShell, Windows Terminal,
+Starship, fastfetch, zoxide, mise, VS Code, 7-Zip, Tailscale, Brave, Discord and Visual Studio
+Build Tools. Then the IosevkaTerm Nerd Font, the "Open with Code" Explorer menu and the
+Terminal-Icons module. Some installers ask for admin rights (UAC), accept them.
 
-```powershell
-if (Test-Path some-repo-name) { "already cloned" } else { git clone git@github.com:zeldxh/some-repo-name.git }
-```
-
-## 4. Install everything the dotfiles configure
+**Close the window and open a new one** so `code` and the rest are on PATH. Without this,
+`install.ps1` skips the VS Code extensions and the Ash theme.
 
 ```powershell
 Set-Location "C:\dev\dotfiles"
-pwsh ./windows/packages/install-packages.ps1
 pwsh ./windows/install.ps1
 git config core.hooksPath hooks
 ```
 
-Every line here is safe to run again later, `winget` skips what is already installed and the
-scripts just overwrite the config files with the same content.
-
-`install-packages.ps1` installs Starship, fastfetch, zoxide, Git, GitHub CLI,
-PowerShell, Windows Terminal, VS Code, 7-Zip, Tailscale, Brave, Discord and the IosevkaTerm
-Nerd Font. `install.ps1` copies the configs into place, sets up Windows Terminal and VS Code,
-installs the VS Code extensions listed in `shared/vscode/extensions.txt` plus the Ash theme
-(cloned from `ash-theme` next to `dotfiles`), and patches Discord with Vencord. Run it again after
-a Discord update, which undoes the Vencord patch. The last line enables
+`install.ps1` copies the configs into place (PowerShell profile, Starship, fastfetch, git, mise,
+Windows Terminal, VS Code settings), installs the VS Code extensions in
+`shared/vscode/extensions.txt`, clones [`ash-theme`](https://github.com/zeldxh/ash-theme) next to
+`dotfiles` and installs it into VS Code, and patches Discord with Vencord. The last line enables
 the pre-push hook that checks for secrets before a push.
+
+Both scripts are safe to run again. Run `install.ps1` again after a Discord update, which undoes
+the Vencord patch.
 
 ## 5. Sign in to the rest
 
 ```powershell
-tailscale status
+if ((gh auth status 2>&1) -match "Logged in") { "Already signed in to GitHub CLI" } else { gh auth login }
+tailscale login
+mise install
 ```
 
-If that shows logged out, run `tailscale login` to reach the VPS over SSH again. Sign in to
-Brave and Discord too if you use their sync, there is nothing to script for either.
+In `gh auth login` pick GitHub.com, SSH, **Skip** the key upload (`id_ed25519_github` is already
+on the account), and log in with the browser. `mise install` installs node, java, python, pnpm
+and fzf. Sign in to Brave and Discord too if you use their sync, there is nothing to script for
+either.
 
 ## 6. Restore your own files
 
 Robocopy only copies what is missing or changed, so these are safe to run more than once.
 
 ```powershell
-robocopy "$backup\Dev" "C:\dev" /E /COPY:DAT /DCOPY:DAT /MT:8
-robocopy "$backup\Andrew" "$HOME\files" /E /COPY:DAT /DCOPY:DAT /MT:8
-robocopy "$backup\Games\Emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
+foreach ($d in 'business', 'personal', 'university') {
+    robocopy "$backup\$d" "$HOME\files\$d" /E /COPY:DAT /DCOPY:DAT /MT:8
+}
+robocopy "$backup\games\emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT /MT:8
 ```
 
-The `Dev` folder on the backup drive is the ongoing backup of `C:\dev`, kept up to date by
-hand. Restore from whatever is there at the time. Anything that already lives in its own GitHub
-repo doesn't need this, just clone it again.
+`security` (account recovery codes and the like) stays on the backup drive only. Projects come
+back by cloning them from GitHub into `C:\dev`.
 
 Reinstall Steam and Riot into `C:\Games\Steam` and `C:\Games\Riot Games` directly, a file copy
 doesn't restore a game library properly.
 
-If any of your repos point at a GitHub account other than your own, confirm you still have
-access to it rather than assuming it will be there.
+## 7. Optional: SSH into this PC from the other machines
 
-## 7. Verify
+Windows has no SSH server by default. From an **admin** PowerShell:
+
+```powershell
+pwsh -ExecutionPolicy Bypass -File "$backup\credentials\scripts\enable-sshd.ps1"
+```
+
+It installs OpenSSH Server (several silent minutes on the first step), allows port 22 only from
+Tailscale addresses (`100.64.0.0/10`), makes PowerShell 7 the login shell and authorizes sao's
+key, so `ssh atlas` from sao gets in without a password.
+
+## 8. Verify
 
 Open a new Windows Terminal window and check for the Ash color scheme, the IosevkaTerm font, and
-the Starship prompt showing `user@hostname` (your actual Windows username and computer name,
-these can be anything, nothing here depends on a specific one). Running `dev` should jump to
-`C:\dev`. A commit should show as verified once the same SSH key is also added as a signing
-key in your GitHub account settings, which is a setting on GitHub's side and not something
-restored by any file here.
+the Starship prompt showing `user@hostname`. Running `dev` should jump to `C:\dev`. VS Code
+should open with the Ash theme. A commit should show as verified once the same SSH key is also
+added as a signing key in your GitHub account settings, which is a setting on GitHub's side and
+not something restored by any file here.
 
 ## What is intentionally not backed up
 
-SSH private keys never go into any git repository, only into `Credentials\ssh` on the backup
-drive, restored by copy in step 2. GitHub CLI and Tailscale tokens are not stored anywhere,
-they come back by signing in again.
+SSH private keys never go into any git repository, only into `credentials\.ssh` on the backup
+drive, restored by copy in step 3. GitHub CLI and Tailscale tokens are not stored anywhere, they
+come back by signing in again.
