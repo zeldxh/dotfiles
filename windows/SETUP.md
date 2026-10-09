@@ -85,14 +85,15 @@ if (Test-Path "$HOME\.config\git\config") {
 ssh -T git@github.com
 ```
 
-The last line should answer `Hi zeldxh!` (its exit code is 1 even then, GitHub gives no shell).
+The last line should answer `Hi <your GitHub username>!` (its exit code is 1 even then, GitHub gives no shell).
 The `icacls` lines matter: OpenSSH refuses a private key that other accounts can read.
 
 ## 4. Clone the dotfiles and install everything
 
 ```powershell
+$login = [regex]::Match((ssh -T git@github.com 2>&1 | Out-String), 'Hi ([^!]+)!').Groups[1].Value
 New-Item -ItemType Directory -Force "C:\dev" | Out-Null
-if (Test-Path "C:\dev\dotfiles") { "dotfiles already cloned" } else { git clone git@github.com:zeldxh/dotfiles.git "C:\dev\dotfiles" }
+if (Test-Path "C:\dev\dotfiles") { "dotfiles already cloned" } else { git clone "git@github.com:$login/dotfiles.git" "C:\dev\dotfiles" }
 Set-Location "C:\dev\dotfiles"
 pwsh ./windows/packages/install-packages.ps1
 ```
@@ -115,7 +116,7 @@ git config core.hooksPath hooks
 Windows Terminal, VS Code settings), installs the VS Code extensions in
 `shared/vscode/extensions.txt`, adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the
 user PATH and runs `mise install` (node, java, python, pnpm, fzf), clones
-[`ash-theme`](https://github.com/zeldxh/ash-theme) next to `dotfiles` and installs it into VS
+`ash-theme` (from the same GitHub owner as the dotfiles' `origin`) next to `dotfiles` and installs it into VS
 Code, and patches Discord with Vencord. The last line enables the pre-push hook that checks for
 secrets before a push.
 

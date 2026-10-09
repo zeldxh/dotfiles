@@ -97,7 +97,10 @@ git -C "$root" config core.hooksPath hooks
 # Ash theme for VS Code: its own public repo, cloned next to this one and kept up to date
 ash="$(dirname "$root")/ash-theme"
 if [ -d "$ash/.git" ]; then git -C "$ash" pull --ff-only -q || echo "could not update $ash"
-else git clone -q https://github.com/zeldxh/ash-theme.git "$ash" || true; fi
+else
+    # same owner as this repo's origin, so a renamed GitHub account needs no edit here
+    git clone -q "$(git -C "$root" remote get-url origin | sed -E 's#[^/:]+$#ash-theme.git#')" "$ash" || true
+fi
 [ -x "$ash/vscode/install.sh" ] && "$ash/vscode/install.sh" || echo "Ash theme not available: $ash"
 
 # Vencord: patch Discord with the official installer CLI. Safe to re-run (it re-patches with the
