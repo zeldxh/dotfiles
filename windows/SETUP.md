@@ -109,7 +109,9 @@ scripts just overwrite the config files with the same content.
 `install-packages.ps1` installs Starship, fastfetch, zoxide, Git, GitHub CLI,
 PowerShell, Windows Terminal, VS Code, 7-Zip, Tailscale, Brave, Discord and the IosevkaTerm
 Nerd Font. `install.ps1` copies the configs into place, sets up Windows Terminal and VS Code,
-and installs the VS Code extensions listed in `shared/vscode/extensions.txt`. The last line enables
+installs the VS Code extensions listed in `shared/vscode/extensions.txt` plus the Ash theme
+(cloned from `ash-theme` next to `dotfiles`), and patches Discord with Vencord. Run it again after
+a Discord update, which undoes the Vencord patch. The last line enables
 the pre-push hook that checks for secrets before a push.
 
 ## 5. Sign in to the rest

@@ -23,7 +23,9 @@ What `install.sh` does, in order:
 2. `mise install`: starship, fastfetch, zellij (from `config/mise/conf.d/linux.toml`) plus the
    shared tools (node, java, python, pnpm, fzf).
 3. Downloads IosevkaTerm Nerd Font Mono (Regular, Bold, Italic, Bold Italic) into `~/.local/share/fonts`.
-4. Copies the configs and scripts listed below.
+4. Copies the configs and scripts listed below, installs the Ash VS Code theme from
+   [`ash-theme`](https://github.com/zeldxh/ash-theme), and patches Discord with Vencord (needs
+   sudo, skipped with `--no-apt`; run it again after a Discord update, which undoes the patch).
 5. Downloads the zjstatus plugin for zellij and pre-grants its permissions.
 6. Adds a snippet to `~/.bashrc` that starts fish (bash stays the login shell).
 7. Runs `cinnamon/apply.sh` (theme, top bar, keybindings, fonts, workspaces).

@@ -100,6 +100,25 @@ if [ -d "$ash/.git" ]; then git -C "$ash" pull --ff-only -q || echo "could not u
 else git clone -q https://github.com/zeldxh/ash-theme.git "$ash" || true; fi
 [ -x "$ash/vscode/install.sh" ] && "$ash/vscode/install.sh" || echo "Ash theme not available: $ash"
 
+# Vencord: patch Discord with the official installer CLI. Safe to re-run (it re-patches with the
+# latest build), and needed after a Discord update, which undoes the patch. Discord lives in
+# /usr/share/discord (root-owned), so it runs with sudo; sudo sets SUDO_USER, which the installer
+# uses to keep Vencord's own files in your home.
+if [ "$apt" = 0 ]; then
+    echo "--no-apt: skipping Vencord (needs sudo)"
+elif command -v discord >/dev/null 2>&1; then
+    cli="$(mktemp -d)/VencordInstallerCli"
+    if curl -fsSL -o "$cli" https://github.com/Vencord/Installer/releases/latest/download/VencordInstallerCli-linux; then
+        chmod +x "$cli"
+        sudo "$cli" -install -branch auto || echo "Vencord install failed"
+    else
+        echo "could not download the Vencord installer"
+    fi
+    rm -rf "$(dirname "$cli")"
+else
+    echo "Discord is not installed, skipping Vencord."
+fi
+
 # --- 5. zjstatus (the zellij tab-only bar) ------------------------------------------------------
 plugin="$HOME/.config/zellij/plugins/zjstatus.wasm"
 if [ ! -f "$plugin" ]; then

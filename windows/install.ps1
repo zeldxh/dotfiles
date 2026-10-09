@@ -49,3 +49,16 @@ if (-not $Collect) {
     if (Test-Path "$ash\.git") { git -C $ash pull --ff-only -q } else { git clone -q https://github.com/zeldxh/ash-theme.git $ash }
     if (Test-Path "$ash\vscode\install.ps1") { & "$ash\vscode\install.ps1" } else { Write-Warning "Ash theme not available: $ash" }
 }
+
+# Vencord: patch Discord with the official installer CLI. Safe to re-run (it re-patches with the
+# latest build), and needed after Discord updates itself, which undoes the patch.
+if (-not $Collect) {
+    if (Test-Path "$env:LOCALAPPDATA\Discord") {
+        $cli = Join-Path $env:TEMP 'VencordInstallerCli.exe'
+        Invoke-WebRequest 'https://github.com/Vencord/Installer/releases/latest/download/VencordInstallerCli.exe' -OutFile $cli
+        & $cli -install -branch auto
+        Remove-Item $cli -ErrorAction SilentlyContinue
+    } else {
+        Write-Warning 'Discord is not installed, skipping Vencord.'
+    }
+}
