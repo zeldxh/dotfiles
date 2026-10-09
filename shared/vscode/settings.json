@@ -1,7 +1,7 @@
 {
     "workbench.sideBar.location": "right",
     "workbench.activityBar.location": "top",
-    "workbench.colorTheme": "Alacritty",
+    "workbench.colorTheme": "Ash",
     "workbench.iconTheme": "catppuccin-mocha",
     "security.workspace.trust.untrustedFiles": "open",
     "editor.fontSize": 22,

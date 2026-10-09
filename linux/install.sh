@@ -94,6 +94,12 @@ git -C "$root" config core.hooksPath hooks
 # mise tools after the config is in place
 [ -n "$m" ] && "$m" install
 
+# Ash theme for VS Code: its own public repo, cloned next to this one and kept up to date
+ash="$(dirname "$root")/ash-theme"
+if [ -d "$ash/.git" ]; then git -C "$ash" pull --ff-only -q || echo "could not update $ash"
+else git clone -q https://github.com/zeldxh/ash-theme.git "$ash" || true; fi
+[ -x "$ash/vscode/install.sh" ] && "$ash/vscode/install.sh" || echo "Ash theme not available: $ash"
+
 # --- 5. zjstatus (the zellij tab-only bar) ------------------------------------------------------
 plugin="$HOME/.config/zellij/plugins/zjstatus.wasm"
 if [ ! -f "$plugin" ]; then

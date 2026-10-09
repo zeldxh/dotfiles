@@ -1,7 +1,7 @@
 default_shell "/usr/bin/fish"
 default_layout "clean"
 on_force_close "quit"
-theme "alacritty"
+theme "ash"
 mouse_mode true
 pane_frames false
 copy_on_select true
@@ -10,7 +10,7 @@ show_startup_tips false
 session_serialization false
 
 themes {
-    alacritty {
+    ash {
         fg "#d8d8d8"
         bg "#181818"
         black "#181818"

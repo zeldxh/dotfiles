@@ -31,7 +31,7 @@
     {
         "defaults": 
         {
-            "colorScheme": "Alacritty",
+            "colorScheme": "Ash",
             "cursorShape": "bar",
             "font": 
             {
@@ -96,7 +96,7 @@
             "cyan": "#75B5AA",
             "foreground": "#D8D8D8",
             "green": "#90A959",
-            "name": "Alacritty",
+            "name": "Ash",
             "purple": "#AA759F",
             "red": "#AC4242",
             "selectionBackground": "#D8D8D8",
@@ -106,11 +106,11 @@
     ],
     "showTabsInTitlebar": true,
     "tabWidthMode": "compact",
-    "theme": "alacritty",
+    "theme": "ash",
     "themes": 
     [
         {
-            "name": "alacritty",
+            "name": "ash",
             "tab": 
             {
                 "background": "#282828FF",

@@ -12,7 +12,7 @@ if status is-interactive
         zoxide init fish | source
     end
 
-    # Alacritty palette, same as the VS Code theme and the Windows profile
+    # Ash palette, same as the VS Code theme and the Windows profile
     set -g fish_color_command 6a9fb5
     set -g fish_color_param f4bf75
     set -g fish_color_quote 90a959

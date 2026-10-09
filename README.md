@@ -1,7 +1,7 @@
 # dotfiles
 
-My setup on two systems, with the same look on both: Alacritty's default palette (`#181818`) and
-`IosevkaTerm Nerd Font Mono`.
+My setup on two systems, with the same look on both: the Ash theme (`#181818`, based on
+Alacritty's default palette) and `IosevkaTerm Nerd Font Mono`.
 
 | | Folder | Guide |
 |---|---|---|
@@ -64,5 +64,5 @@ or `CLAUDE.md` / `AGENTS.md`. `shared/git/ignore` is a global gitignore that als
 ## Not included
 
 - `~/.ssh` (keys, `allowed_signers`): secrets. Each machine has its own key, see `linux/README.md`.
-- The VS Code theme lives in its own repo, `alacritty-ports` (with the Brave, Firefox and Discord themes).
+- The Ash theme lives in its own public repo, [`ash-theme`](https://github.com/zeldxh/ash-theme) (VS Code, Brave, Firefox, Discord). Both install scripts clone it next to this repo and install the VS Code theme.
 - Programs themselves: installed by `windows/packages` (winget) or `linux/install.sh` (apt, mise).

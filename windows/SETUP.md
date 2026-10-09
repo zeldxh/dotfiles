@@ -84,11 +84,11 @@ Pick SSH and use the existing key.
 New-Item -ItemType Directory -Force "C:\dev" | Out-Null
 Set-Location "C:\dev"
 if (Test-Path dotfiles) { "dotfiles already cloned" } else { git clone git@github.com:zeldxh/dotfiles.git }
-if (Test-Path alacritty-ports) { "alacritty-ports already cloned" } else { git clone git@github.com:zeldxh/alacritty-ports.git }
 ```
 
-`alacritty-ports` is private, so step 2 has to be done first. Clone the rest of your repos as
-you need them, the same check-first pattern works for any of them:
+The Ash theme (`ash-theme`) does not need cloning by hand: `install.ps1` in step 4 clones it next
+to `dotfiles` and installs it into VS Code. Clone the rest of your repos as you need them, the
+same check-first pattern works for any of them:
 
 ```powershell
 if (Test-Path some-repo-name) { "already cloned" } else { git clone git@github.com:zeldxh/some-repo-name.git }
@@ -143,7 +143,7 @@ access to it rather than assuming it will be there.
 
 ## 7. Verify
 
-Open a new Windows Terminal window and check for the Alacritty color scheme, the IosevkaTerm font, and
+Open a new Windows Terminal window and check for the Ash color scheme, the IosevkaTerm font, and
 the Starship prompt showing `user@hostname` (your actual Windows username and computer name,
 these can be anything, nothing here depends on a specific one). Running `dev` should jump to
 `C:\dev`. A commit should show as verified once the same SSH key is also added as a signing

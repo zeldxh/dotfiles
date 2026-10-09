@@ -42,3 +42,10 @@ foreach ($rel in $map.Keys) {
     }
     Write-Host "$from -> $to"
 }
+
+# Ash theme for VS Code: its own public repo, cloned next to this one and kept up to date
+if (-not $Collect) {
+    $ash = Join-Path (Split-Path $root -Parent) 'ash-theme'
+    if (Test-Path "$ash\.git") { git -C $ash pull --ff-only -q } else { git clone -q https://github.com/zeldxh/ash-theme.git $ash }
+    if (Test-Path "$ash\vscode\install.ps1") { & "$ash\vscode\install.ps1" } else { Write-Warning "Ash theme not available: $ash" }
+}

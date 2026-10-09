@@ -15,4 +15,3 @@ nerudevs.jellyfish-dark
 redhat.java
 ritwickdey.liveserver
 vue.volar
-zeldxh.alacritty-theme

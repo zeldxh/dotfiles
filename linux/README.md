@@ -1,7 +1,7 @@
 # Linux (Mint / Cinnamon)
 
 Alacritty + zellij + fish + Starship, rofi as the launcher, and a Cinnamon desktop riced with the
-Alacritty palette (`#181818`) and `IosevkaTerm Nerd Font Mono`. Same look as the Windows setup,
+Ash palette (`#181818`) and `IosevkaTerm Nerd Font Mono`. Same look as the Windows setup,
 different tools (see [what differs from Windows](#what-differs-from-windows)).
 
 ## Install
@@ -42,7 +42,7 @@ creates the applet settings files after an applet has loaded once.
 | `bin/` | `~/.local/bin/` |
 | `applications/power-menu.desktop` | `~/.local/share/applications/` (launcher behind the top bar's power button) |
 | `autostart/focus-new-windows.desktop` | `~/.config/autostart/` |
-| `cinnamon/alacritty-rice.css` | appended to a copy of the Mint-Y-Dark-Red Cinnamon theme, installed as `~/.themes/Alacritty-Rice` |
+| `cinnamon/ash.css` | appended to a copy of the Mint-Y-Dark-Red Cinnamon theme, installed as `~/.themes/Ash` |
 | `cinnamon/apply.sh` | not copied, it runs `gsettings` / `dbus` |
 
 `shared/` is used as well: `starship.toml`, the global gitignore and the mise tool list.
@@ -87,7 +87,7 @@ creates the applet settings files after an applet has loaded once.
 one-line [zjstatus](https://github.com/dj95/zjstatus) bar that only shows tab numbers, no session
 name and no hint bar. `Alt + /` runs `bin/zj-hints`, which sends text to the right side of that
 bar and clears it on the next press. zellij is set to quit (not detach) when the window closes, so
-sessions do not pile up. Alacritty's colors are written out in full from `alacritty-ports/palette.md`.
+sessions do not pile up. Alacritty's colors are written out in full from `ash-theme/palette.md`.
 
 **Key translation.** Terminals cannot tell `Ctrl+Tab` or `Ctrl+Shift+T` apart from plain keys.
 `alacritty.toml` rewrites them to `Alt` sequences that zellij and fish bind (for example
@@ -99,7 +99,7 @@ set through `fish_color_*`. `conf.d/windows-selection.fish` adds PSReadLine-styl
 to a shell function: it swallows every keypress.
 
 **Desktop.**
-- `apply.sh` builds the Cinnamon theme (a copy of Mint-Y-Dark-Red plus `alacritty-rice.css`), sets
+- `apply.sh` builds the Cinnamon theme (a copy of Mint-Y-Dark-Red plus `ash.css`), sets
   fonts, keybindings and workspaces, and lays out the panels: a 36 px top bar (workspaces, clock,
   tray, bluetooth, network, sound, battery, power button) and the taskbar at the bottom, auto-hidden.
 - `bin/focus-new-windows` runs at login and activates every new normal window. Muffin denies focus to
@@ -148,8 +148,8 @@ entry and has to be added by hand. Private keys and `allowed_signers` are never 
 ## Not included
 
 - `~/.ssh` keys and `allowed_signers`.
-- Browser themes: load `alacritty-ports/brave` and `alacritty-ports/firefox` by hand from the browser.
-- Discord's Custom CSS and the VS Code theme come from `alacritty-ports` and your synced settings.
+- Browser themes: load `ash-theme/brave` and `ash-theme/firefox` by hand from the browser.
+- Discord's Custom CSS comes from `ash-theme/discord`. The VS Code theme is installed by `install.sh`.
 - The base Cinnamon theme (`Mint-Y-Dark-Red`), it ships with Mint; only the overrides are here.
 
 ## Troubleshooting

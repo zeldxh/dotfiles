@@ -1,5 +1,5 @@
 #!/bin/bash
-# Applies the Cinnamon desktop setup: Alacritty-Rice theme, top bar, fonts, keybindings, workspaces.
+# Applies the Cinnamon desktop setup: Ash theme, top bar, fonts, keybindings, workspaces.
 # Idempotent: safe to run again. Needs a running Cinnamon session (uses gsettings / dbus).
 # Applet settings (clock format, battery label...) live in JSON files Cinnamon only creates once an
 # applet has been loaded, so on a brand new account run this script, log out and in, and run it again.
@@ -9,17 +9,18 @@ here="$(cd "$(dirname "$0")" && pwd)"
 font='IosevkaTerm Nerd Font Mono'
 bin="$HOME/.local/bin"
 base_theme='Mint-Y-Dark-Red'
-theme='Alacritty-Rice'
+theme='Ash'
 
 gs() { gsettings set "$@" 2>/dev/null || echo "skipped: gsettings set $1 $2"; }
 
 # --- Theme: copy of the base Cinnamon theme plus the palette overrides --------------------------
 src="/usr/share/themes/$base_theme/cinnamon"
 if [ -d "$src" ]; then
+    rm -rf "$HOME/.themes/Alacritty-Rice"   # the theme's name before it became Ash
     rm -rf "$HOME/.themes/$theme/cinnamon"
     mkdir -p "$HOME/.themes/$theme"
     cp -r "$src" "$HOME/.themes/$theme/cinnamon"
-    cat "$here/alacritty-rice.css" >> "$HOME/.themes/$theme/cinnamon/cinnamon.css"
+    cat "$here/ash.css" >> "$HOME/.themes/$theme/cinnamon/cinnamon.css"
     # force a reload when the theme is already active
     [ "$(gsettings get org.cinnamon.theme name)" = "'$theme'" ] && gs org.cinnamon.theme name "$base_theme"
     gs org.cinnamon.theme name "$theme"
