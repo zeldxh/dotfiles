@@ -117,8 +117,9 @@ Windows Terminal, VS Code settings), installs the VS Code extensions in
 `shared/vscode/extensions.txt`, adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the
 user PATH and runs `mise install` (node, java, python, pnpm, fzf), clones
 `ash-theme` (from the same GitHub owner as the dotfiles' `origin`) next to `dotfiles` and installs it into VS
-Code, and patches Discord with Vencord. The last line enables the pre-push hook that checks for
-secrets before a push.
+Code, and patches Discord with Vencord. The last line enables the git hooks: pre-push checks for
+secrets and Claude attribution before a push, commit-msg checks each commit message (format,
+no em dash, no Claude attribution).
 
 Both scripts are safe to run again. Run `install.ps1` again after a Discord update, which undoes
 the Vencord patch.

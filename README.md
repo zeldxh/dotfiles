@@ -9,7 +9,7 @@ Alacritty's default palette) and `IosevkaTerm Nerd Font Mono`.
 | Linux Mint (Cinnamon) | [`linux/`](linux) | Alacritty, zellij, fish, Starship, rofi, riced Cinnamon. See [`linux/README.md`](linux/README.md) |
 | Both | [`shared/`](shared) | Starship prompt, global gitignore, mise tools, VS Code settings and extensions |
 
-`hooks/pre-push` is shared too and works on both.
+`hooks/` (`pre-push`, `commit-msg`) is shared too and works on both.
 
 ## Layout
 
@@ -18,7 +18,7 @@ shared/     used by both systems (starship.toml, git/ignore, mise/, vscode/)
 windows/    install.ps1, packages/ (winget), config/ (powershell, git, fastfetch),
             powershell/, windows-terminal/, SETUP.md
 linux/      install.sh, config/, bin/, cinnamon/, autostart/, README.md
-hooks/      pre-push
+hooks/      pre-push, commit-msg
 ```
 
 ## Use
@@ -39,7 +39,7 @@ Linux:
 ./linux/install.sh --collect  # system -> repo (after editing configs live)
 ```
 
-Then on either system, enable the pre-push secret check once:
+Then on either system, enable the git hooks (secret check, commit message check) once:
 
 ```
 git config core.hooksPath hooks
@@ -59,7 +59,10 @@ git config core.hooksPath hooks
 ## Safety
 
 `hooks/pre-push` blocks a push that adds private keys, tokens, `.env` files, `.ssh/` content,
-or `CLAUDE.md` / `AGENTS.md`. `shared/git/ignore` is a global gitignore that also skips agent files.
+`CLAUDE.md` / `AGENTS.md`, or a commit message with Claude/Anthropic attribution.
+`hooks/commit-msg` rejects a commit whose subject is not `type(scope): description`, whose
+message has an em dash, or that credits Claude/Anthropic (co-authored-by lines for people are
+fine). `shared/git/ignore` is a global gitignore that also skips agent files.
 
 ## Not included
 

@@ -1,5 +1,6 @@
 #!/bin/sh
-# Blocks a push that contains secrets or agent files. Enable with: git config core.hooksPath hooks
+# Blocks a push that contains secrets, agent files or Claude attribution in a commit message.
+# Enable with: git config core.hooksPath hooks
 # Checks only the commits being pushed.
 
 zero=$(git hash-object --stdin </dev/null | tr '[0-9a-f]' '0')
@@ -18,6 +19,12 @@ while read local_ref local_sha remote_ref remote_sha; do
   hits=$(git log -p $range 2>/dev/null | grep -E '^\+' | grep -nE 'BEGIN [A-Z ]*PRIVATE KEY|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|tskey-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10,}|(password|passwd|secret|api[_-]?key|token)[[:space:]]*[=:][[:space:]]*["'"'"'][^"'"'"']{8,}')
   if [ -n "$hits" ]; then
     echo "pre-push: blocked, possible secret in added lines:"; echo "$hits" | head -5; status=1
+  fi
+
+  # second line of defense for commits that skipped the commit-msg hook (people are fine as co-authors)
+  ai=$(git log --format='%h %B' $range 2>/dev/null | grep -inE 'co-authored-by:.*(claude|anthropic)|noreply@anthropic\.com|generated (with|by) \[?claude')
+  if [ -n "$ai" ]; then
+    echo "pre-push: blocked, Claude/Anthropic attribution in a commit message:"; echo "$ai" | head -5; status=1
   fi
 done
 

@@ -1,0 +1,35 @@
+#!/bin/sh
+# Checks each commit message. Enable with: git config core.hooksPath hooks
+#   - subject in the form type(scope): description, e.g. "fix(windows): ..."
+#   - no em dash anywhere
+#   - no Claude/Anthropic attribution. Co-authored-by lines for people are fine.
+
+# what git will keep: drop comment lines and everything below the scissors line of `commit -v`
+msg=$(sed -e '/^# -\{24\} >8 -\{24\}$/,$d' -e '/^#/d' "$1")
+subject=$(printf '%s\n' "$msg" | sed -n '/[^[:space:]]/{p;q;}')
+status=0
+
+case "$subject" in
+  "Merge "*|"Revert "*|"fixup! "*|"squash! "*|"amend! "*) ;;
+  *)
+    if ! printf '%s\n' "$subject" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)\([A-Za-z0-9._/-]+\)!?: [^ ]'; then
+      echo "commit-msg: blocked, the subject must be 'type(scope): description', e.g. 'fix(windows): ...'"
+      echo "  got: $subject"
+      status=1
+    fi
+    ;;
+esac
+
+if printf '%s\n' "$msg" | grep -qF "$(printf '\342\200\224')"; then
+  echo "commit-msg: blocked, the message has an em dash; use a colon, comma or period instead"
+  status=1
+fi
+
+ai=$(printf '%s\n' "$msg" | grep -inE '^co-authored-by:.*(claude|anthropic)|noreply@anthropic\.com|generated (with|by) \[?claude')
+if [ -n "$ai" ]; then
+  echo "commit-msg: blocked, Claude/Anthropic attribution in the message:"
+  echo "$ai"
+  status=1
+fi
+
+exit $status
