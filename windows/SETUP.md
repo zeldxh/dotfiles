@@ -17,6 +17,22 @@ installer's partition screen.
 Then install drivers and run Windows Update, rebooting until nothing is pending. A pending
 reboot makes some installers in step 4 fail (Visual Studio Build Tools exits with 5008).
 
+### DNS: IPv4 only
+
+This connection has no working IPv6 (the router announces an IPv6 route, but the PC only gets a
+`fe80::` address). With IPv6 DNS servers configured, Windows tries them first for every new name
+and waits for them to time out: every new site takes 7 to 15 s to start loading.
+
+- If you debloat with WinUtil, set its DNS option to **Default**, never a provider: picking one
+  (Cloudflare, Google...) also sets its IPv6 servers. Its "IPv6: Set IPv4 as Preferred" tweak
+  is fine to keep, it does not touch DNS.
+- Set Cloudflare by hand, **IPv4 only**, in the Settings app: Settings > Network & internet >
+  Ethernet > DNS server assignment > Edit > Manual. Turn on **IPv4**: preferred `1.1.1.1`,
+  alternate `1.0.0.1`, DNS over HTTPS **On (automatic template)** for both. Leave **IPv6 off**.
+  Save.
+
+Step 8 checks that it worked.
+
 ## 1. Base tools
 
 `winget` comes with the App Installer package. On a fresh Windows 10 it can be missing or too
@@ -143,6 +159,17 @@ Tailscale addresses (`100.64.0.0/10`), makes PowerShell 7 the login shell and au
 key, so `ssh atlas` from sao gets in without a password.
 
 ## 8. Verify
+
+DNS first: no IPv6 DNS servers, and a lookup of a name nobody asked for before (so the cache
+cannot hide anything) well under 1000 ms:
+
+```powershell
+Get-DnsClientServerAddress -InterfaceAlias Ethernet -AddressFamily IPv6 | Select-Object -ExpandProperty ServerAddresses
+(Measure-Command { Resolve-DnsName "check$(Get-Random).cloudflare.com" }).TotalMilliseconds
+```
+
+The first line must print nothing. If it prints addresses and the lookup takes seconds, remove
+them from an admin terminal: `netsh interface ipv6 delete dnsservers "Ethernet" all`.
 
 Open a new Windows Terminal window and check for the Ash color scheme, the IosevkaTerm font, and
 the Starship prompt showing `user@hostname`. Running `dev` should jump to `C:\dev`. VS Code
