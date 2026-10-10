@@ -1,3 +1,10 @@
+# SSH logins: sshd starts pwsh without -NoLogo and can't pass it arguments, so erase the banner.
+# The session starts on a cleared screen, so going home and clearing down only removes the banner.
+# Skipped for `ssh host command` (pwsh -c ...), where it would end up in the command's output.
+if ($env:SSH_CONNECTION -and -not ([Environment]::GetCommandLineArgs() -match '^-(c|command|f|file)$')) {
+    Write-Host "`e[H`e[J" -NoNewline
+}
+
 if (Get-Module -ListAvailable Terminal-Icons) { Import-Module Terminal-Icons }
 
 # Real pwsh profile. $PROFILE just dot-sources this file.
