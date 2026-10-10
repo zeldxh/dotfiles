@@ -47,6 +47,12 @@
         },
         {
           "PackageIdentifier": "Discord.Discord"
+        },
+        {
+          "PackageIdentifier": "Docker.DockerDesktop"
+        },
+        {
+          "PackageIdentifier": "JesseDuffield.Lazydocker"
         }
       ]
     }

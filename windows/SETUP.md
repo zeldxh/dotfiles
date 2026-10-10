@@ -99,7 +99,8 @@ pwsh ./windows/packages/install-packages.ps1
 ```
 
 `install-packages.ps1` installs, with `winget`: Git, GitHub CLI, PowerShell, Windows Terminal,
-Starship, fastfetch, zoxide, mise, VS Code, 7-Zip, Tailscale, Brave and Discord. Then the
+Starship, fastfetch, zoxide, mise, VS Code, 7-Zip, Tailscale, Brave, Discord, Docker Desktop and
+lazydocker. Then the
 IosevkaTerm Nerd Font, the "Open with Code" Explorer menu and the Terminal-Icons module. Some
 installers ask for admin rights (UAC), accept them.
 
@@ -117,7 +118,7 @@ Windows Terminal, VS Code settings), installs the VS Code extensions in
 `shared/vscode/extensions.txt`, adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the
 user PATH and runs `mise install` (node, java, python, pnpm, fzf), clones
 `ash-theme` (from the same GitHub owner as the dotfiles' `origin`) next to `dotfiles` and installs it into VS
-Code, and patches Discord with Vencord. The last line enables the git hooks: pre-push checks for
+Code, turns off Docker Desktop's start with Windows, and patches Discord with Vencord. The last line enables the git hooks: pre-push checks for
 secrets and Claude attribution before a push, commit-msg checks each commit message (format,
 no em dash, no Claude attribution).
 

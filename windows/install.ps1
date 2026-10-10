@@ -72,6 +72,18 @@ if (-not $Collect) {
     if (Test-Path "$ash\vscode\install.ps1") { & "$ash\vscode\install.ps1" } else { Write-Warning "Ash theme not available: $ash" }
 }
 
+# Docker Desktop: never start with Windows. Its installer adds a Run entry, and the app re-adds it
+# on launch unless its own AutoStart setting is off, so turn both off. Safe to re-run.
+if (-not $Collect -and (Test-Path "$env:ProgramFiles\Docker\Docker\Docker Desktop.exe")) {
+    $dockerSettings = "$env:APPDATA\Docker\settings-store.json"
+    $s = if (Test-Path $dockerSettings) { Get-Content $dockerSettings -Raw | ConvertFrom-Json } else { [pscustomobject]@{} }
+    $s | Add-Member -NotePropertyName AutoStart -NotePropertyValue $false -Force
+    New-Item -ItemType Directory -Force (Split-Path $dockerSettings) | Out-Null
+    $s | ConvertTo-Json -Depth 10 | Set-Content $dockerSettings -Encoding utf8NoBOM
+    Remove-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Name 'Docker Desktop' -ErrorAction SilentlyContinue
+    Write-Host 'Docker Desktop: autostart off'
+}
+
 # Vencord: patch Discord with the official installer CLI. Safe to re-run (it re-patches with the
 # latest build), and needed after Discord updates itself, which undoes the patch.
 if (-not $Collect) {
