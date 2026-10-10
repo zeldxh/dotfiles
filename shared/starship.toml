@@ -11,7 +11,7 @@ show_always = true
 style_user = "bold green"
 style_root = "bold red"
 format = "[$user]($style)"
-aliases = { "Zel" = "zel" }
+aliases = { "Zel" = "zel", "Administrator" = "zel" }
 
 [hostname]
 ssh_only = false
