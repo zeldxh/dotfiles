@@ -98,7 +98,8 @@ dimmed a little (opacity 88) when it loses focus.
 so the real file lives with the other configs and is easy to collect. It sets up:
 
 - Starship (config from `~\.config\starship.toml`), zoxide and Terminal-Icons, each only if installed.
-- Aliases and functions: `ff` (fastfetch), `7z` (7-Zip), `dev` (go to `C:\dev`) and `ep` (edit the
+- Aliases and functions: `ff` (fastfetch), `7z` (7-Zip), `dev` (go to `C:\dev`), `code` (with no
+  arguments go to `C:\dev\code`; with arguments it is still VS Code's `code`) and `ep` (edit the
   profile with `$env:EDITOR`, else VS Code, else Notepad).
 - Syntax colors as you type, from the same palette as the VS Code theme, and history suggestions.
 - `TELEMETRY_ENABLED=false`, so `docker agent` does not send telemetry.

@@ -38,6 +38,13 @@ function ep {
 # dev: jump to the projects folder (C:\dev)
 function dev { Set-Location "C:\dev" }
 
+# code: with no arguments jump to the personal projects folder (C:\dev\code); with arguments it is
+# still VS Code's `code` command (`code .`, `code --wait`, ...)
+function code {
+    if ($args.Count -eq 0) { Set-Location "C:\dev\code"; return }
+    & (Get-Command code -CommandType Application | Select-Object -First 1).Source @args
+}
+
 # 7z: alias for 7-Zip
 Set-Alias 7z "C:\Program Files\7-Zip\7z.exe"
 # Syntax colors as you type (same palette as the VS Code theme) and history suggestions
