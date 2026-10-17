@@ -8,6 +8,13 @@ param([switch]$Collect)
 # $PSScriptRoot is windows/; shared/ lives next to it
 $root = Split-Path $PSScriptRoot -Parent
 
+# Dev folder layout: one folder per kind of project. config\ holds this repo and ash-theme.
+if (-not $Collect) {
+    foreach ($d in 'config', 'code', 'euxora', 'learning', 'university', 'temp') {
+        New-Item -ItemType Directory -Force "C:\dev\$d" | Out-Null
+    }
+}
+
 $wtDir = Get-ChildItem "$env:LOCALAPPDATA\Packages" -Directory -Filter "Microsoft.WindowsTerminal_*" |
     Select-Object -First 1 -ExpandProperty FullName
 

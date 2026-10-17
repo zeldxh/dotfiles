@@ -2,8 +2,20 @@
 
 Steps to rebuild this machine by hand after a fresh Windows 10 or 11 install. Updated 2026-10-09.
 
-Projects live in `C:\dev`. The `dev` shell shortcut already points there. Personal files live in
-`~\files`, not `Documents`, which programs fill with their own folders.
+Projects live in `C:\dev`, one folder per kind of project. The `dev` shell shortcut points to
+`C:\dev`. `install.ps1` creates the folders (step 4):
+
+```
+C:\dev\
+  config\       this repo (config\dotfiles) and ash-theme (config\ash-theme)
+  code\         personal projects
+  euxora\       client and business projects
+  learning\     courses and self-study
+  university\   university work
+  temp\         throwaway experiments
+```
+
+Personal files live in `~\files`, not `Documents`, which programs fill with their own folders.
 
 Every block below is plain PowerShell, copy and paste it straight into a terminal. Most steps
 check first and skip anything already in place, so it is fine to run a step again.
@@ -92,9 +104,9 @@ The `icacls` lines matter: OpenSSH refuses a private key that other accounts can
 
 ```powershell
 $login = [regex]::Match((ssh -T git@github.com 2>&1 | Out-String), 'Hi ([^!]+)!').Groups[1].Value
-New-Item -ItemType Directory -Force "C:\dev" | Out-Null
-if (Test-Path "C:\dev\dotfiles") { "dotfiles already cloned" } else { git clone "git@github.com:$login/dotfiles.git" "C:\dev\dotfiles" }
-Set-Location "C:\dev\dotfiles"
+New-Item -ItemType Directory -Force "C:\dev\config" | Out-Null
+if (Test-Path "C:\dev\config\dotfiles") { "dotfiles already cloned" } else { git clone "git@github.com:$login/dotfiles.git" "C:\dev\config\dotfiles" }
+Set-Location "C:\dev\config\dotfiles"
 pwsh ./windows/packages/install-packages.ps1
 ```
 
@@ -108,12 +120,12 @@ installers ask for admin rights (UAC), accept them.
 `install.ps1` skips the VS Code extensions, the Ash theme and the mise tools.
 
 ```powershell
-Set-Location "C:\dev\dotfiles"
+Set-Location "C:\dev\config\dotfiles"
 pwsh ./windows/install.ps1
 git config core.hooksPath hooks
 ```
 
-`install.ps1` copies the configs into place (PowerShell profile, Starship, fastfetch, git, mise,
+`install.ps1` creates the `C:\dev` folders listed at the top, copies the configs into place (PowerShell profile, Starship, fastfetch, git, mise,
 Windows Terminal, VS Code settings), installs the VS Code extensions in
 `shared/vscode/extensions.txt`, adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the
 user PATH and runs `mise install` (node, java, python, pnpm, fzf), clones
@@ -148,7 +160,8 @@ robocopy "$backup\games\emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT 
 ```
 
 `security` (account recovery codes and the like) stays on the backup drive only. Projects come
-back by cloning them from GitHub into `C:\dev`.
+back by cloning them from GitHub into the matching folder of `C:\dev` (`code`, `euxora`, `learning`
+or `university`).
 
 Reinstall Steam and Riot into `C:\Games\Steam` and `C:\Games\Riot Games` directly, a file copy
 doesn't restore a game library properly.

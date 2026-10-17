@@ -10,8 +10,8 @@ follow [`SETUP.md`](SETUP.md). This file explains what is in the folder and how 
 ## Install
 
 ```powershell
-git clone git@github.com:zeldxh/dotfiles.git C:\dev\dotfiles
-cd C:\dev\dotfiles
+git clone git@github.com:zeldxh/dotfiles.git C:\dev\config\dotfiles
+cd C:\dev\config\dotfiles
 pwsh ./windows/packages/install-packages.ps1   # new PC only: programs, font, VS Code context menu
 pwsh ./windows/install.ps1                     # repo -> system
 pwsh ./windows/install.ps1 -Collect            # system -> repo, after editing configs live
@@ -32,16 +32,30 @@ What `install-packages.ps1` does:
 
 What `install.ps1` does:
 
-1. Copies the configs listed below into place.
-2. Installs the VS Code extensions in `shared/vscode/extensions.txt`.
-3. Adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the user PATH and runs `mise install`
+1. Creates the [`C:\dev` folders](#dev-folder).
+2. Copies the configs listed below into place.
+3. Installs the VS Code extensions in `shared/vscode/extensions.txt`.
+4. Adds mise's shims folder (`%LOCALAPPDATA%\mise\shims`) to the user PATH and runs `mise install`
    (node, java, python, pnpm, fzf).
-4. Clones [`ash-theme`](https://github.com/zeldxh/ash-theme) next to this repo (same owner as
-   `origin`) and installs the VS Code theme.
-5. Turns off Docker Desktop's start with Windows.
-6. Patches Discord with Vencord (run it again after a Discord update, which undoes the patch).
+5. Clones [`ash-theme`](https://github.com/zeldxh/ash-theme) next to this repo, in
+   `C:\dev\config\ash-theme` (same owner as `origin`), and installs the VS Code theme.
+6. Turns off Docker Desktop's start with Windows.
+7. Patches Discord with Vencord (run it again after a Discord update, which undoes the patch).
 
-With `-Collect` only step 1 runs, in the other direction.
+With `-Collect` only step 2 runs, in the other direction.
+
+## Dev folder
+
+Projects live in `C:\dev`, one folder per kind of project (the `dev` command jumps there):
+
+| Folder | For |
+|---|---|
+| `config` | this repo (`config\dotfiles`) and `config\ash-theme` |
+| `code` | personal projects |
+| `euxora` | client and business projects |
+| `learning` | courses and self-study |
+| `university` | university work |
+| `temp` | throwaway experiments |
 
 ## Layout
 
