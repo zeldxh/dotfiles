@@ -7,6 +7,9 @@ if ($env:SSH_CONNECTION -and -not ([Environment]::GetCommandLineArgs() -match '^
 
 if (Get-Module -ListAvailable Terminal-Icons) { Import-Module Terminal-Icons }
 
+# Opt out of telemetry (docker agent / cagent)
+$env:TELEMETRY_ENABLED = 'false'
+
 # Real pwsh profile. $PROFILE just dot-sources this file.
 # Prompt
 $env:STARSHIP_CONFIG = "$HOME\.config\starship.toml"
