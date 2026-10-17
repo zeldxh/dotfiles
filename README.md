@@ -5,7 +5,7 @@ Alacritty's default palette) and `IosevkaTerm Nerd Font Mono`.
 
 | | Folder | Guide |
 |---|---|---|
-| Windows 10 / 11 | [`windows/`](windows) | Windows Terminal, PowerShell 7, Starship, fastfetch, Git, VS Code. See [`windows/SETUP.md`](windows/SETUP.md) |
+| Windows 10 / 11 | [`windows/`](windows) | Windows Terminal, PowerShell 7, Starship, fastfetch, Git, VS Code. See [`windows/README.md`](windows/README.md), and [`windows/SETUP.md`](windows/SETUP.md) for a full reinstall |
 | Linux Mint (Cinnamon) | [`linux/`](linux) | Alacritty, zellij, fish, Starship, rofi, riced Cinnamon. See [`linux/README.md`](linux/README.md) |
 | Both | [`shared/`](shared) | Starship prompt, global gitignore, mise tools, VS Code settings and extensions |
 
@@ -16,7 +16,7 @@ Alacritty's default palette) and `IosevkaTerm Nerd Font Mono`.
 ```
 shared/     used by both systems (starship.toml, git/ignore, mise/, vscode/)
 windows/    install.ps1, packages/ (winget), config/ (powershell, git, fastfetch),
-            powershell/, windows-terminal/, SETUP.md
+            powershell/, windows-terminal/, README.md, SETUP.md
 linux/      install.sh, config/, bin/, cinnamon/, autostart/, README.md
 hooks/      pre-push, commit-msg
 ```
