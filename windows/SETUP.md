@@ -9,10 +9,7 @@ Projects live in `C:\dev`, one folder per kind of project. The `dev` shell short
 C:\dev\
   config\       this repo (config\dotfiles) and ash-theme (config\ash-theme)
   code\         personal projects
-  euxora\       client and business projects
-  learning\     courses and self-study
-  university\   university work
-  temp\         throwaway experiments
+  euxora\       business projects; client projects go in euxora\clients
 ```
 
 Personal files live in `~\files`, not `Documents`, which programs fill with their own folders.
@@ -160,8 +157,7 @@ robocopy "$backup\games\emulators" "C:\Games\Emulators" /E /COPY:DAT /DCOPY:DAT 
 ```
 
 `security` (account recovery codes and the like) stays on the backup drive only. Projects come
-back by cloning them from GitHub into the matching folder of `C:\dev` (`code`, `euxora`, `learning`
-or `university`).
+back by cloning them from GitHub into the matching folder of `C:\dev` (`code` or `euxora`).
 
 Reinstall Steam and Riot into `C:\Games\Steam` and `C:\Games\Riot Games` directly, a file copy
 doesn't restore a game library properly.
