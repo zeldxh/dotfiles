@@ -13,3 +13,8 @@ desktop.ini
 CLAUDE.md
 AGENTS.md
 .claude/
+.agents/
+GEMINI.md
+.cursorrules
+.mcp.json
+.github/copilot-instructions.md
