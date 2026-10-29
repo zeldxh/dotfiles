@@ -38,6 +38,9 @@ function ep {
 # dev: jump to the projects folder (C:\dev)
 function dev { Set-Location "C:\dev" }
 
+# uni: jump to the university projects folder (C:\dev\university)
+function uni { Set-Location "C:\dev\university" }
+
 # code: with no arguments jump to the personal projects folder (C:\dev\code); with arguments it is
 # still VS Code's `code` command (`code .`, `code --wait`, ...)
 function code {
