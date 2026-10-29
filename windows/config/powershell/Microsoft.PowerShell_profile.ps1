@@ -38,14 +38,21 @@ function ep {
 # dev: jump to the projects folder (C:\dev)
 function dev { Set-Location "C:\dev" }
 
-# uni: jump to the university projects folder (C:\dev\university)
-function uni { Set-Location "C:\dev\university" }
-
 # code: with no arguments jump to the personal projects folder (C:\dev\code); with arguments it is
 # still VS Code's `code` command (`code .`, `code --wait`, ...)
 function code {
     if ($args.Count -eq 0) { Set-Location "C:\dev\code"; return }
     & (Get-Command code -CommandType Application | Select-Object -First 1).Source @args
+}
+
+# fp: open a folder in File Pilot, from any folder. `fp` opens the current folder; `fp euxora` opens
+# the path relative to the current folder (any path works, relative or absolute)
+function fp {
+    param([Parameter(ValueFromRemainingArguments)][string[]]$Path)
+    $target = if ($Path) { $Path -join ' ' } else { '.' }
+    $full = Resolve-Path -LiteralPath $target -ErrorAction SilentlyContinue
+    if (-not $full) { Write-Error "fp: path not found: $target"; return }
+    Start-Process "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe" -ArgumentList "`"$($full.ProviderPath)`""
 }
 
 # 7z: alias for 7-Zip

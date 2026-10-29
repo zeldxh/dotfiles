@@ -53,6 +53,9 @@
         },
         {
           "PackageIdentifier": "JesseDuffield.Lazydocker"
+        },
+        {
+          "PackageIdentifier": "Voidstar.FilePilot"
         }
       ]
     }
